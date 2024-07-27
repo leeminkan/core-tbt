@@ -1,0 +1,55 @@
+version: '3.8'
+services:
+  tbt-redis:
+    image: redis:6.2-alpine
+    restart: always
+    command: redis-server --save 20 1 --loglevel warning --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
+    volumes: 
+      - tbt-redis:/data
+    networks:
+      - tbt-network
+
+  nginx:
+    image: nginx:stable-alpine
+    ports:
+      - "80:80"
+    volumes: 
+      - ./nginx:/etc/nginx/conf.d/
+    depends_on:
+      - chat-tbt-1
+      - chat-tbt-2
+    networks:
+      - tbt-network
+    
+  chat-tbt-1:
+    build:
+      context: .
+      dockerfile: ./apps/chat-tbt/Dockerfile
+      target: development
+    command: pnpm run start:dev chat-tbt
+    env_file:
+      - ./apps/chat-tbt/.env
+    volumes:
+      - .:/usr/src/app
+    networks:
+      - tbt-network
+    
+  chat-tbt-2:
+    build:
+      context: .
+      dockerfile: ./apps/chat-tbt/Dockerfile
+      target: development
+    command: pnpm run start:dev chat-tbt
+    env_file:
+      - ./apps/chat-tbt/.env
+    volumes:
+      - .:/usr/src/app
+    networks:
+      - tbt-network
+
+volumes:
+  tbt-redis:
+    driver: local
+
+networks:
+  tbt-network:
