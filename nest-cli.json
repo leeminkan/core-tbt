@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json.schemastore.org/nest-cli",
+  "collection": "@nestjs/schematics",
+  "sourceRoot": "apps/core-tbt/src",
+  "compilerOptions": {
+    "deleteOutDir": true,
+    "webpack": true,
+    "tsConfigPath": "apps/core-tbt/tsconfig.app.json"
+  },
+  "monorepo": true,
+  "root": "apps/core-tbt",
+  "projects": {
+    "core-tbt": {
+      "type": "application",
+      "root": "apps/core-tbt",
+      "entryFile": "main",
+      "sourceRoot": "apps/core-tbt/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/core-tbt/tsconfig.app.json"
+      }
+    },
+    "chat-tbt": {
+      "type": "application",
+      "root": "apps/chat-tbt",
+      "entryFile": "main",
+      "sourceRoot": "apps/chat-tbt/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/chat-tbt/tsconfig.app.json"
+      }
+    }
+  }
+}
