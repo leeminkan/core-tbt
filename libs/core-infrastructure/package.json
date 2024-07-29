@@ -1,0 +1,25 @@
+{
+  "name": "core-infrastructure",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli",
+    "migration:run": "npm run typeorm migration:run -- -d ./src/data-source.ts",
+    "migration:generate": "npm run typeorm -- -d ./src/data-source.ts migration:generate",
+    "migration:create": "npm run typeorm -- migration:create",
+    "migration:revert": "npm run typeorm -- -d ./src/data-source.ts migration:revert"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@nestjs/typeorm": "^10.0.2",
+    "dotenv": "^16.4.5",
+    "pg": "^8.12.0",
+    "typeorm": "^0.3.20"
+  },
+  "moduleNameMapper": {
+    "^@app/core-domain(|/.*)$": "<rootDir>/../core-domain/src/$1"
+  }
+}

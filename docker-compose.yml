@@ -1,54 +1,70 @@
 version: '3.8'
 services:
-  tbt-redis:
-    image: redis:6.2-alpine
-    restart: always
-    command: redis-server --save 20 1 --loglevel warning --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
-    volumes: 
-      - tbt-redis:/data
-    networks:
-      - tbt-network
+  # tbt-redis:
+  #   image: redis:6.2-alpine
+  #   restart: always
+  #   command: redis-server --save 20 1 --loglevel warning --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
+  #   volumes: 
+  #     - tbt-redis:/data
+  #   networks:
+  #     - tbt-network
 
-  nginx:
-    image: nginx:stable-alpine
+  # nginx:
+  #   image: nginx:stable-alpine
+  #   ports:
+  #     - "80:80"
+  #   volumes: 
+  #     - ./nginx:/etc/nginx/conf.d/
+  #   depends_on:
+  #     - chat-tbt-1
+  #     - chat-tbt-2
+  #   networks:
+  #     - tbt-network
+    
+  # chat-tbt-1:
+  #   build:
+  #     context: .
+  #     dockerfile: ./apps/chat-tbt/Dockerfile
+  #     target: development
+  #   command: pnpm run start:dev chat-tbt
+  #   env_file:
+  #     - ./apps/chat-tbt/.env
+  #   volumes:
+  #     - .:/usr/src/app
+  #   networks:
+  #     - tbt-network
+    
+  # chat-tbt-2:
+  #   build:
+  #     context: .
+  #     dockerfile: ./apps/chat-tbt/Dockerfile
+  #     target: development
+  #   command: pnpm run start:dev chat-tbt
+  #   env_file:
+  #     - ./apps/chat-tbt/.env
+  #   volumes:
+  #     - .:/usr/src/app
+  #   networks:
+  #     - tbt-network
+
+  tbt-postgres:
+    image: postgres:13
+    container_name: tbt-postgres
     ports:
-      - "80:80"
-    volumes: 
-      - ./nginx:/etc/nginx/conf.d/
-    depends_on:
-      - chat-tbt-1
-      - chat-tbt-2
-    networks:
-      - tbt-network
-    
-  chat-tbt-1:
-    build:
-      context: .
-      dockerfile: ./apps/chat-tbt/Dockerfile
-      target: development
-    command: pnpm run start:dev chat-tbt
-    env_file:
-      - ./apps/chat-tbt/.env
+      - '5432:5432'
+    environment:
+      POSTGRES_DB: core-tbt
+      POSTGRES_USER: core-tbt
+      POSTGRES_PASSWORD: 123!@#abcABC
     volumes:
-      - .:/usr/src/app
-    networks:
-      - tbt-network
-    
-  chat-tbt-2:
-    build:
-      context: .
-      dockerfile: ./apps/chat-tbt/Dockerfile
-      target: development
-    command: pnpm run start:dev chat-tbt
-    env_file:
-      - ./apps/chat-tbt/.env
-    volumes:
-      - .:/usr/src/app
+      - tbt-postgres:/var/lib/postgresql/data
     networks:
       - tbt-network
 
 volumes:
   tbt-redis:
+    driver: local
+  tbt-postgres:
     driver: local
 
 networks:

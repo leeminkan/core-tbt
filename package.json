@@ -27,6 +27,8 @@
     "@nestjs/platform-socket.io": "^10.3.10",
     "@nestjs/websockets": "^10.3.10",
     "@socket.io/redis-adapter": "^8.3.0",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.1",
     "joi": "^17.13.3",
     "redis": "^4.6.15",
     "reflect-metadata": "^0.1.13",
@@ -73,7 +75,12 @@
     "coverageDirectory": "./coverage",
     "testEnvironment": "node",
     "roots": [
-      "<rootDir>/apps/"
-    ]
+      "<rootDir>/apps/",
+      "<rootDir>/libs/"
+    ],
+    "moduleNameMapper": {
+      "^@app/core-infrastructure(|/.*)$": "<rootDir>/libs/core-infrastructure/src/$1",
+      "^@app/core-domain(|/.*)$": "<rootDir>/libs/core-domain/src/$1"
+    }
   }
 }

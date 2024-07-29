@@ -27,6 +27,24 @@
       "compilerOptions": {
         "tsConfigPath": "apps/chat-tbt/tsconfig.app.json"
       }
+    },
+    "core-infrastructure": {
+      "type": "library",
+      "root": "libs/core-infrastructure",
+      "entryFile": "index",
+      "sourceRoot": "libs/core-infrastructure/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/core-infrastructure/tsconfig.lib.json"
+      }
+    },
+    "core-domain": {
+      "type": "library",
+      "root": "libs/core-domain",
+      "entryFile": "index",
+      "sourceRoot": "libs/core-domain/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/core-domain/tsconfig.lib.json"
+      }
     }
   }
 }
