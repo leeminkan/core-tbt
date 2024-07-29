@@ -19,15 +19,9 @@ export class Session1722147535559 implements MigrationInterface {
             isNullable: false,
           },
           {
-            name: 'token',
+            name: 'hash',
             type: 'varchar',
-            length: '255', // Adjust length as needed
-            isNullable: false,
-          },
-          {
-            name: 'refresh_token',
-            type: 'varchar',
-            length: '255', // Adjust length as needed
+            length: '256',
             isNullable: false,
           },
           {

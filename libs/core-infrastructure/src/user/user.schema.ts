@@ -16,7 +16,7 @@ export class User extends BaseSchema {
   @Column({ type: 'varchar', length: 32 })
   username: string;
 
-  @Column({ type: 'varchar', length: 32 })
+  @Column({ type: 'varchar', length: 256 })
   password: string;
 
   @OneToMany(() => Session, (session) => session.user, { cascade: true })

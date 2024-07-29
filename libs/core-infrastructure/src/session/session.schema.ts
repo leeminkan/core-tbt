@@ -24,11 +24,8 @@ export class Session extends BaseSchema {
   @JoinColumn({ name: 'user_id' })
   user: UserSchema;
 
-  @Column({ nullable: false })
-  token: string;
-
-  @Column({ nullable: false })
-  refresh_token: string;
+  @Column({ nullable: false, length: '32' })
+  hash: string;
 
   @Column({ default: false })
   is_logout: boolean;

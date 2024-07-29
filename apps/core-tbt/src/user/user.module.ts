@@ -3,9 +3,10 @@ import { CoreInfrastructureModule } from '@app/core-infrastructure';
 
 import { UserService } from './user.service';
 import { UserController } from './user.controller';
+import { SessionModule } from '../session/session.module';
 
 @Module({
-  imports: [CoreInfrastructureModule],
+  imports: [CoreInfrastructureModule.forFeature(), SessionModule],
   controllers: [UserController],
   providers: [UserService],
   exports: [],

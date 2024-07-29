@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { UserRepository } from '@app/core-infrastructure';
 import { User } from '@app/core-domain';
+import { hashSync } from 'bcryptjs';
 
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -10,12 +11,16 @@ export class UserService {
   constructor(private readonly userRepository: UserRepository) {}
 
   async create(createUserDto: CreateUserDto): Promise<User> {
-    const user = await this.userRepository.createUser(createUserDto);
+    const hashPassword = hashSync(createUserDto.password, 10);
+    const user = await this.userRepository.createUser({
+      ...createUserDto,
+      password: hashPassword,
+    });
     return user;
   }
 
   async findAllAndCount(): Promise<{
-    users: User[];
+    data: User[];
     totalCount: number;
   }> {
     return await this.userRepository.findAllAndCountUser({ take: 20 });

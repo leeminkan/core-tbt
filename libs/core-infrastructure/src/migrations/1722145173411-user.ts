@@ -21,7 +21,7 @@ export class User1722145173411 implements MigrationInterface {
           {
             name: 'password',
             type: 'varchar',
-            length: '32',
+            length: '256',
           },
           {
             name: 'created_at',

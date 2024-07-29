@@ -60,6 +60,21 @@ services:
       - tbt-postgres:/var/lib/postgresql/data
     networks:
       - tbt-network
+    
+  core-tbt:
+    build:
+      context: .
+      dockerfile: ./apps/core-tbt/Dockerfile
+      target: development
+    command: pnpm run start:dev core-tbt
+    ports:
+      - '3000:3000'
+    env_file:
+      - ./apps/core-tbt/.env
+    volumes:
+      - .:/usr/src/app
+    networks:
+      - tbt-network
 
 volumes:
   tbt-redis:

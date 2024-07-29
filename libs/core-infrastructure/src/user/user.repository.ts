@@ -16,13 +16,20 @@ export class UserRepository extends Repository<UserSchema> {
     return UserMapper.mapToDomain(user);
   }
 
-  async findAllAndCountUser({ take = 20 }: { take?: number }) {
-    const [users, totalCount] = await this.findAndCount({
+  async findAllAndCountUser({
+    take = 20,
+    skip = 0,
+  }: {
+    take?: number;
+    skip?: number;
+  }) {
+    const [data, totalCount] = await this.findAndCount({
       take,
+      skip,
     });
 
     return {
-      users: users.map((user) => UserMapper.mapToDomain(user)),
+      data: data.map((item) => UserMapper.mapToDomain(item)),
       totalCount,
     };
   }
