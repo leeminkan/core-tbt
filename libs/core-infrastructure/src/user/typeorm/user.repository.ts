@@ -1,6 +1,8 @@
-import { DataSource, DeepPartial, Repository } from 'typeorm';
+import { DataSource, DeepPartial, EntityManager, Repository } from 'typeorm';
 import { Injectable, NotFoundException } from '@nestjs/common';
 
+import { RepositoryOptions } from '@app/core-infrastructure/types';
+import { UnitOfWorkManager } from '@app/core-infrastructure/unit-of-work';
 import { UserRepository as UserRepositoryAbstract } from '../user-repository.abstract';
 import { User as UserSchema } from './user.schema';
 import { UserMapper } from './user.mapper';
@@ -14,20 +16,35 @@ export class UserRepository
     super(UserSchema, dataSource.createEntityManager());
   }
 
-  async createUser(data: DeepPartial<UserSchema>) {
-    const prepareUser = this.create(data);
-    const user = await this.save(prepareUser);
+  getRepository(manager?: UnitOfWorkManager) {
+    if (!manager) return this;
+
+    if (!(manager instanceof EntityManager)) {
+      throw new Error('Manager is not supported');
+    }
+
+    return manager.withRepository(new Repository(UserSchema, manager));
+  }
+
+  async createUser(data: DeepPartial<UserSchema>, options?: RepositoryOptions) {
+    const repository = this.getRepository(options?.unitOfWorkManager);
+    const prepareUser = repository.create(data);
+    const user = await repository.save(prepareUser);
     return UserMapper.mapToDomain(user);
   }
 
-  async findAllAndCountUser({
-    take = 20,
-    skip = 0,
-  }: {
-    take?: number;
-    skip?: number;
-  }) {
-    const [data, totalCount] = await this.findAndCount({
+  async findAllAndCountUser(
+    {
+      take = 20,
+      skip = 0,
+    }: {
+      take?: number;
+      skip?: number;
+    },
+    options?: RepositoryOptions,
+  ) {
+    const repository = this.getRepository(options?.unitOfWorkManager);
+    const [data, totalCount] = await repository.findAndCount({
       take,
       skip,
     });
@@ -38,31 +55,43 @@ export class UserRepository
     };
   }
 
-  async findUserById(id: number) {
-    const user = await this.findOneBy({ id });
+  async findUserById(id: number, options?: RepositoryOptions) {
+    const repository = this.getRepository(options?.unitOfWorkManager);
+    const user = await repository.findOneBy({ id });
     return user ? UserMapper.mapToDomain(user) : null;
   }
 
-  async findUserByUsername(username: string) {
-    const user = await this.findOneBy({ username });
+  async findUserByUsername(username: string, options?: RepositoryOptions) {
+    const repository = this.getRepository(options?.unitOfWorkManager);
+    const user = await repository.findOneBy({ username });
     return user ? UserMapper.mapToDomain(user) : null;
   }
 
-  async updateUserById(id: number, data: DeepPartial<UserSchema>) {
-    return await this.update(id, { ...data });
+  async updateUserById(
+    id: number,
+    data: DeepPartial<UserSchema>,
+    options?: RepositoryOptions,
+  ) {
+    const repository = this.getRepository(options?.unitOfWorkManager);
+    return await repository.update(id, { ...data });
   }
 
-  async findAndUpdateUserById(id: number, data: DeepPartial<UserSchema>) {
-    const user = await this.findUserById(id);
+  async findAndUpdateUserById(
+    id: number,
+    data: DeepPartial<UserSchema>,
+    options?: RepositoryOptions,
+  ) {
+    const user = await this.findUserById(id, options);
 
     if (!user) {
       throw new NotFoundException(`User with ID ${id} not found`);
     }
 
-    return await this.updateUserById(id, data);
+    return await this.updateUserById(id, data, options);
   }
 
-  async deleteUserById(id: number) {
-    await this.delete(id);
+  async deleteUserById(id: number, options?: RepositoryOptions) {
+    const repository = this.getRepository(options?.unitOfWorkManager);
+    return await repository.delete(id);
   }
 }

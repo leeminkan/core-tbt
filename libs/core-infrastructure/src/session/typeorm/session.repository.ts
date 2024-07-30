@@ -1,26 +1,44 @@
-import { DataSource, DeepPartial, Repository } from 'typeorm';
+import { DataSource, DeepPartial, EntityManager, Repository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
 
+import { RepositoryOptions } from '@app/core-infrastructure/types';
+import { UnitOfWorkManager } from '@app/core-infrastructure/unit-of-work';
 import { Session as SessionSchema } from './session.schema';
 import { SessionMapper } from './session.mapper';
 
 @Injectable()
 export class SessionRepository extends Repository<SessionSchema> {
-  constructor(private dataSource: DataSource) {
+  constructor(private readonly dataSource: DataSource) {
     super(SessionSchema, dataSource.createEntityManager());
   }
 
-  async createSession(data: DeepPartial<SessionSchema>) {
-    const prepareSession = this.create(data);
-    const session = await this.save(prepareSession);
+  getRepository(manager?: UnitOfWorkManager) {
+    if (!manager) return this;
+
+    if (!(manager instanceof EntityManager)) {
+      throw new Error('Manager is not supported');
+    }
+
+    return manager.withRepository(new Repository(SessionSchema, manager));
+  }
+
+  async createSession(
+    data: DeepPartial<SessionSchema>,
+    options?: RepositoryOptions,
+  ) {
+    const repository = this.getRepository(options?.unitOfWorkManager);
+    const prepareSession = repository.create(data);
+    const session = await repository.save(prepareSession);
     return SessionMapper.mapToDomain(session);
   }
 
   async findAllAndCountByUserId(
     userId: number,
     { take = 20, skip = 0 }: { take?: number; skip?: number },
+    options?: RepositoryOptions,
   ) {
-    const [data, totalCount] = await this.findAndCount({
+    const repository = this.getRepository(options?.unitOfWorkManager);
+    const [data, totalCount] = await repository.findAndCount({
       where: {
         user_id: userId,
       },
@@ -34,12 +52,18 @@ export class SessionRepository extends Repository<SessionSchema> {
     };
   }
 
-  async findSessionById(id: string) {
-    const session = await this.findOneBy({ id });
+  async findSessionById(id: string, options?: RepositoryOptions) {
+    const repository = this.getRepository(options?.unitOfWorkManager);
+    const session = await repository.findOneBy({ id });
     return session ? SessionMapper.mapToDomain(session) : null;
   }
 
-  async updateSessionById(id: string, data: DeepPartial<SessionSchema>) {
-    return await this.update(id, { ...data });
+  async updateSessionById(
+    id: string,
+    data: DeepPartial<SessionSchema>,
+    options?: RepositoryOptions,
+  ) {
+    const repository = this.getRepository(options?.unitOfWorkManager);
+    return await repository.update(id, { ...data });
   }
 }
