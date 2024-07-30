@@ -6,8 +6,13 @@ import {
   CoreInfrastructureAsyncOptions,
   CORE_INFRASTRUCTURE_OPTIONS,
 } from './core-infrastructure.types';
-import { User, UserRepository } from './user';
-import { Session, SessionRepository } from './session';
+import { UserRepository } from './user';
+import { User, UserRepository as TypeOrmUserRepository } from './user/typeorm';
+import { SessionRepository } from './session/typeorm';
+import {
+  Session,
+  SessionRepository as TypeOrmSessionRepository,
+} from './session/typeorm';
 
 @Module({})
 export class CoreInfrastructureModule {
@@ -49,7 +54,16 @@ export class CoreInfrastructureModule {
   }
 
   static forFeature(): DynamicModule {
-    const providers: Provider[] = [UserRepository, SessionRepository];
+    const providers: Provider[] = [
+      {
+        provide: UserRepository,
+        useClass: TypeOrmUserRepository,
+      },
+      {
+        provide: SessionRepository,
+        useClass: TypeOrmSessionRepository,
+      },
+    ];
     return {
       module: CoreInfrastructureModule,
       providers: providers,

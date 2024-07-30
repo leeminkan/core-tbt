@@ -39,7 +39,7 @@ export class SessionRepository extends Repository<SessionSchema> {
     return session ? SessionMapper.mapToDomain(session) : null;
   }
 
-  async updateUserById(id: number, data: DeepPartial<SessionSchema>) {
+  async updateSessionById(id: string, data: DeepPartial<SessionSchema>) {
     return await this.update(id, { ...data });
   }
 }

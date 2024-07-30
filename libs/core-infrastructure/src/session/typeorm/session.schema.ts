@@ -6,9 +6,9 @@ import {
   JoinColumn,
 } from 'typeorm';
 
-import { BaseSchema } from '../base.schema';
+import { BaseSchema } from '../../base.schema';
 
-import { User as UserSchema } from '../user';
+import { User as UserSchema } from '../../user/typeorm';
 
 @Entity({
   name: 'sessions',

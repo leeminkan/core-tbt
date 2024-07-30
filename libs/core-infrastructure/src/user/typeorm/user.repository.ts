@@ -1,11 +1,15 @@
 import { DataSource, DeepPartial, Repository } from 'typeorm';
 import { Injectable, NotFoundException } from '@nestjs/common';
 
+import { UserRepository as UserRepositoryAbstract } from '../user-repository.abstract';
 import { User as UserSchema } from './user.schema';
 import { UserMapper } from './user.mapper';
 
 @Injectable()
-export class UserRepository extends Repository<UserSchema> {
+export class UserRepository
+  extends Repository<UserSchema>
+  implements UserRepositoryAbstract
+{
   constructor(private dataSource: DataSource) {
     super(UserSchema, dataSource.createEntityManager());
   }
@@ -56,5 +60,9 @@ export class UserRepository extends Repository<UserSchema> {
     }
 
     return await this.updateUserById(id, data);
+  }
+
+  async deleteUserById(id: number) {
+    await this.delete(id);
   }
 }

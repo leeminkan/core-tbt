@@ -26,8 +26,11 @@ export class AuthService {
     password: string;
   }): Promise<any> {
     const user = await this.userRepository.findUserByUsername(username);
+    if (!user) {
+      throw new UnauthorizedException();
+    }
 
-    const isValidPassword = compareSync(password, user?.password);
+    const isValidPassword = compareSync(password, user.password);
     if (!isValidPassword) {
       throw new UnauthorizedException();
     }
@@ -71,7 +74,7 @@ export class AuthService {
       throw new UnauthorizedException();
     }
 
-    await this.sessionRepository.update(session.id, {
+    await this.sessionRepository.updateSessionById(session.id, {
       hash,
     });
 
