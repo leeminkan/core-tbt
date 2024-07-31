@@ -1,6 +1,6 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
-import { BaseSchema } from '../../base.schema';
+import { BaseSchema } from '../../../base.schema';
 import { Session } from '../../session/typeorm/session.schema';
 
 @Entity({

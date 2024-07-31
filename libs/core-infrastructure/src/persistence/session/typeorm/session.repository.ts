@@ -1,6 +1,7 @@
 import { DataSource, DeepPartial, EntityManager, Repository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
 
+import { Session as SessionDomainEntity } from '@app/core-domain';
 import { RepositoryOptions } from '@app/core-infrastructure/types';
 import { UnitOfWorkManager } from '@app/core-infrastructure/unit-of-work';
 import { Session as SessionSchema } from './session.schema';
@@ -23,11 +24,14 @@ export class SessionRepository extends Repository<SessionSchema> {
   }
 
   async createSession(
-    data: DeepPartial<SessionSchema>,
+    { userId, ...data }: DeepPartial<SessionDomainEntity>,
     options?: RepositoryOptions,
   ) {
     const repository = this.getRepository(options?.unitOfWorkManager);
-    const prepareSession = repository.create(data);
+    const prepareSession = repository.create({
+      ...data,
+      user_id: userId,
+    });
     const session = await repository.save(prepareSession);
     return SessionMapper.mapToDomain(session);
   }
@@ -60,10 +64,10 @@ export class SessionRepository extends Repository<SessionSchema> {
 
   async updateSessionById(
     id: string,
-    data: DeepPartial<SessionSchema>,
+    { userId, ...data }: DeepPartial<SessionDomainEntity>,
     options?: RepositoryOptions,
   ) {
     const repository = this.getRepository(options?.unitOfWorkManager);
-    return await repository.update(id, { ...data });
+    return await repository.update(id, { ...data, user_id: userId });
   }
 }

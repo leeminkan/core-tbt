@@ -1,6 +1,7 @@
 import { DataSource, DeepPartial, EntityManager, Repository } from 'typeorm';
 import { Injectable, NotFoundException } from '@nestjs/common';
 
+import { User as UserDomainEntity } from '@app/core-domain';
 import { RepositoryOptions } from '@app/core-infrastructure/types';
 import { UnitOfWorkManager } from '@app/core-infrastructure/unit-of-work';
 import { UserRepository as UserRepositoryAbstract } from '../user-repository.abstract';
@@ -26,7 +27,10 @@ export class UserRepository
     return manager.withRepository(new Repository(UserSchema, manager));
   }
 
-  async createUser(data: DeepPartial<UserSchema>, options?: RepositoryOptions) {
+  async createUser(
+    data: DeepPartial<UserDomainEntity>,
+    options?: RepositoryOptions,
+  ) {
     const repository = this.getRepository(options?.unitOfWorkManager);
     const prepareUser = repository.create(data);
     const user = await repository.save(prepareUser);
@@ -69,7 +73,7 @@ export class UserRepository
 
   async updateUserById(
     id: number,
-    data: DeepPartial<UserSchema>,
+    data: DeepPartial<UserDomainEntity>,
     options?: RepositoryOptions,
   ) {
     const repository = this.getRepository(options?.unitOfWorkManager);
@@ -78,7 +82,7 @@ export class UserRepository
 
   async findAndUpdateUserById(
     id: number,
-    data: DeepPartial<UserSchema>,
+    data: DeepPartial<UserDomainEntity>,
     options?: RepositoryOptions,
   ) {
     const user = await this.findUserById(id, options);

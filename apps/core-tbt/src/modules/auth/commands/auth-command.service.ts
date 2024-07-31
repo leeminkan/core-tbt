@@ -36,7 +36,7 @@ export class AuthCommandService {
       .digest('hex');
 
     const session = await this.sessionRepository.createSession({
-      user_id: user.id,
+      userId: user.id,
       hash,
     });
 

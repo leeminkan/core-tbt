@@ -1,18 +1,21 @@
 import { DynamicModule, Module, Provider } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
+import { UserRepository, SessionRepository } from './persistence';
+import {
+  User,
+  UserRepository as TypeOrmUserRepository,
+} from './persistence/user/typeorm';
+import {
+  Session,
+  SessionRepository as TypeOrmSessionRepository,
+} from './persistence/session/typeorm';
+
 import {
   CoreInfrastructureOption,
   CoreInfrastructureAsyncOptions,
   CORE_INFRASTRUCTURE_OPTIONS,
 } from './core-infrastructure.types';
-import { UserRepository } from './user';
-import { User, UserRepository as TypeOrmUserRepository } from './user/typeorm';
-import { SessionRepository } from './session/typeorm';
-import {
-  Session,
-  SessionRepository as TypeOrmSessionRepository,
-} from './session/typeorm';
 
 @Module({})
 export class CoreInfrastructureModule {
