@@ -22,7 +22,9 @@
       "@app/core-infrastructure": ["libs/core-infrastructure/src"],
       "@app/core-infrastructure/*": ["libs/core-infrastructure/src/*"],
       "@app/core-domain": ["libs/core-domain/src"],
-      "@app/core-domain/*": ["libs/core-domain/src/*"]
+      "@app/core-domain/*": ["libs/core-domain/src/*"],
+      "@app/core-tbt": ["apps/core-tbt/src"],
+      "@app/core-tbt/*": ["apps/core-tbt/src/*"]
     }
   }
 }

@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { SessionRepository } from '@app/core-infrastructure';
 
 @Injectable()
-export class SessionService {
+export class SessionCommandService {
   constructor(private readonly sessionRepository: SessionRepository) {}
 
   async findAllAndCountByUserId(userId: number) {

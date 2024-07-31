@@ -1,14 +1,18 @@
 import { Module } from '@nestjs/common';
 import { CoreInfrastructureModule } from '@app/core-infrastructure';
 
-import { UserService } from './user.service';
+import { UserCommandModule } from './commands/user-command.module';
+import { UserQueryModule } from './queries/user-query.module';
 import { UserController } from './user.controller';
-import { SessionModule } from '../session/session.module';
+import { SessionCommandModule } from '../session/commands';
 
 @Module({
-  imports: [CoreInfrastructureModule.forFeature(), SessionModule],
+  imports: [
+    CoreInfrastructureModule.forFeature(),
+    UserCommandModule,
+    UserQueryModule,
+    SessionCommandModule,
+  ],
   controllers: [UserController],
-  providers: [UserService],
-  exports: [],
 })
 export class UserModule {}

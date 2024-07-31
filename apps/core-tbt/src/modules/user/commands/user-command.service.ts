@@ -1,13 +1,13 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { UserRepository } from '@app/core-infrastructure';
 import { User } from '@app/core-domain';
 import { hashSync } from 'bcryptjs';
 
-import { CreateUserDto } from './dtos/create-user.dto';
-import { UpdateUserDto } from './dtos/update-user.dto';
+import { CreateUserDto } from '../dtos/create-user.dto';
+import { UpdateUserDto } from '../dtos/update-user.dto';
 
 @Injectable()
-export class UserService {
+export class UserCommandService {
   constructor(private readonly userRepository: UserRepository) {}
 
   async create(createUserDto: CreateUserDto): Promise<User> {
@@ -16,23 +16,6 @@ export class UserService {
       ...createUserDto,
       password: hashPassword,
     });
-    return user;
-  }
-
-  async findAllAndCount(): Promise<{
-    data: User[];
-    totalCount: number;
-  }> {
-    return await this.userRepository.findAllAndCountUser({ take: 20 });
-  }
-
-  async findOne(id: number): Promise<User> {
-    const user = await this.userRepository.findUserById(id);
-
-    if (!user) {
-      throw new NotFoundException(`User with ID ${id} not found`);
-    }
-
     return user;
   }
 

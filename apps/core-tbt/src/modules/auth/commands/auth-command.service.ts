@@ -1,19 +1,15 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { randomStringGenerator } from '@nestjs/common/utils/random-string-generator.util';
-import { JwtService } from '@nestjs/jwt';
 import { UserRepository, SessionRepository } from '@app/core-infrastructure';
-import { ConfigService } from '@nestjs/config';
 import { createHash } from 'node:crypto';
-import ms from 'ms';
 import { compareSync } from 'bcryptjs';
 
-import { AllConfigType } from '../../configs';
+import { TokenService } from '@app/core-tbt/modules/jwt';
 
 @Injectable()
-export class AuthService {
+export class AuthCommandService {
   constructor(
-    private readonly jwtService: JwtService,
-    private readonly configService: ConfigService<AllConfigType>,
+    private readonly tokenService: TokenService,
     private readonly userRepository: UserRepository,
     private readonly sessionRepository: SessionRepository,
   ) {}
@@ -44,7 +40,7 @@ export class AuthService {
       hash,
     });
 
-    return await this.getTokensData({
+    return await this.tokenService.getTokensData({
       userId: user.id,
       sessionId: session.id,
       hash,
@@ -78,56 +74,12 @@ export class AuthService {
       hash,
     });
 
-    const { token, refreshToken, tokenExpires } = await this.getTokensData({
-      userId: session.userId,
-      sessionId: session.id,
-      hash,
-    });
-
-    return {
-      token,
-      refreshToken,
-      tokenExpires,
-    };
-  }
-
-  private async getTokensData(data: {
-    userId: number;
-    sessionId: string;
-    hash: string;
-  }) {
-    const tokenExpiresIn = this.configService.getOrThrow('auth.expires', {
-      infer: true,
-    });
-
-    const tokenExpires = Date.now() + ms(tokenExpiresIn);
-
-    const [token, refreshToken] = await Promise.all([
-      await this.jwtService.signAsync(
-        {
-          userId: data.userId,
-          sessionId: data.sessionId,
-        },
-        {
-          secret: this.configService.getOrThrow('auth.secret', { infer: true }),
-          expiresIn: tokenExpiresIn,
-        },
-      ),
-      await this.jwtService.signAsync(
-        {
-          sessionId: data.sessionId,
-          hash: data.hash,
-        },
-        {
-          secret: this.configService.getOrThrow('auth.refreshSecret', {
-            infer: true,
-          }),
-          expiresIn: this.configService.getOrThrow('auth.refreshExpires', {
-            infer: true,
-          }),
-        },
-      ),
-    ]);
+    const { token, refreshToken, tokenExpires } =
+      await this.tokenService.getTokensData({
+        userId: session.userId,
+        sessionId: session.id,
+        hash,
+      });
 
     return {
       token,

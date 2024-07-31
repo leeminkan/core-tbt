@@ -14,7 +14,6 @@ import {
 
 import { UserModule } from './modules/user';
 import { AuthModule } from './modules/auth';
-import { SessionModule } from './modules/session';
 
 @Module({
   imports: [
@@ -41,7 +40,6 @@ import { SessionModule } from './modules/session';
     }),
     UserModule,
     AuthModule,
-    SessionModule,
   ],
   controllers: [AppController],
   providers: [AppService],

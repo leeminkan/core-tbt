@@ -9,19 +9,19 @@ import {
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { SignInDto } from './dtos/sign-in.dto';
-import { AuthService } from './auth.service';
+import { AuthCommandService } from './commands/auth-command.service';
 
 @Controller({
   path: 'auth',
   version: '1',
 })
 export class AuthController {
-  constructor(private authService: AuthService) {}
+  constructor(private authCommandService: AuthCommandService) {}
 
   @HttpCode(HttpStatus.OK)
   @Post('login')
   async signIn(@Body() signInDto: SignInDto) {
-    return await this.authService.signIn({
+    return await this.authCommandService.signIn({
       username: signInDto.username,
       password: signInDto.password,
     });
@@ -31,7 +31,7 @@ export class AuthController {
   @UseGuards(AuthGuard('jwt-refresh'))
   @HttpCode(HttpStatus.OK)
   async refresh(@Request() request) {
-    return await this.authService.refreshToken({
+    return await this.authCommandService.refreshToken({
       sessionId: request.user.sessionId,
       hash: request.user.hash,
     });

@@ -2,8 +2,10 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ConfigService } from '@nestjs/config';
+
+import { AllConfigType } from '@app/core-tbt/configs';
+
 import { JwtRefreshPayloadType } from './types/jwt-refresh-payload.type';
-import { AllConfigType } from '../../../configs/config.type';
 
 @Injectable()
 export class JwtRefreshStrategy extends PassportStrategy(

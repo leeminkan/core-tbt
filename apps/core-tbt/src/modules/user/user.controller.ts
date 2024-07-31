@@ -11,8 +11,9 @@ import {
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 
-import { SessionService } from '../session/session.service';
-import { UserService } from './user.service';
+import { SessionCommandService } from '../session/commands/session-command.service';
+import { UserCommandService } from './commands/user-command.service';
+import { UserQueryService } from './queries/user-query.service';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UpdateUserDto } from './dtos/update-user.dto';
 
@@ -23,28 +24,29 @@ import { UpdateUserDto } from './dtos/update-user.dto';
 @UseGuards(AuthGuard('jwt'))
 export class UserController {
   constructor(
-    private readonly userService: UserService,
-    private readonly sessionService: SessionService,
+    private readonly userCommandService: UserCommandService,
+    private readonly userQueryService: UserQueryService,
+    private readonly sessionCommandService: SessionCommandService,
   ) {}
 
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
-    return this.userService.create(createUserDto);
+    return this.userCommandService.create(createUserDto);
   }
 
   @Get()
   findAllAndCount() {
-    return this.userService.findAllAndCount();
+    return this.userQueryService.findAllAndCount();
   }
 
   @Get(':id')
   findOne(@Param('id', ParseIntPipe) id: number) {
-    return this.userService.findOne(id);
+    return this.userQueryService.findOne(id);
   }
 
   @Get('/:id/sessions')
   findAllAndCountByUserId(@Param('id', ParseIntPipe) id: number) {
-    return this.sessionService.findAllAndCountByUserId(id);
+    return this.sessionCommandService.findAllAndCountByUserId(id);
   }
 
   @Patch(':id')
@@ -52,11 +54,11 @@ export class UserController {
     @Param('id', ParseIntPipe) id: number,
     @Body() updateUserDto: UpdateUserDto,
   ) {
-    return this.userService.update(id, updateUserDto);
+    return this.userCommandService.update(id, updateUserDto);
   }
 
   @Delete(':id')
   remove(@Param('id', ParseIntPipe) id: number) {
-    return this.userService.remove(id);
+    return this.userCommandService.remove(id);
   }
 }

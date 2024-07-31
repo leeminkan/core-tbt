@@ -1,12 +1,11 @@
 import { Module } from '@nestjs/common';
 import { CoreInfrastructureModule } from '@app/core-infrastructure';
 
-import { SessionService } from './session.service';
+import { UserCommandService } from './user-command.service';
 
 @Module({
   imports: [CoreInfrastructureModule.forFeature()],
-  controllers: [],
-  providers: [SessionService],
-  exports: [SessionService],
+  providers: [UserCommandService],
+  exports: [UserCommandService],
 })
-export class SessionModule {}
+export class UserCommandModule {}
