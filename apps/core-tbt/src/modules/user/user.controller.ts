@@ -13,8 +13,8 @@ import { AuthGuard } from '@nestjs/passport';
 
 import { SessionService } from '../session/session.service';
 import { UserService } from './user.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { CreateUserDto } from './dtos/create-user.dto';
+import { UpdateUserDto } from './dtos/update-user.dto';
 
 @Controller({
   path: 'user',

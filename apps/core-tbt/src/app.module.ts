@@ -5,11 +5,16 @@ import { CoreInfrastructureModule } from '@app/core-infrastructure';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
-import { appConfig, databaseConfig, authConfig, AllConfigType } from './config';
+import {
+  appConfig,
+  databaseConfig,
+  authConfig,
+  AllConfigType,
+} from './configs';
 
-import { UserModule } from './user';
-import { AuthModule } from './auth';
-import { SessionModule } from './session';
+import { UserModule } from './modules/user';
+import { AuthModule } from './modules/auth';
+import { SessionModule } from './modules/session';
 
 @Module({
   imports: [

@@ -7,7 +7,7 @@ import { createHash } from 'node:crypto';
 import ms from 'ms';
 import { compareSync } from 'bcryptjs';
 
-import { AllConfigType } from '../config';
+import { AllConfigType } from '../../configs';
 
 @Injectable()
 export class AuthService {

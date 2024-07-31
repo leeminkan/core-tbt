@@ -3,8 +3,8 @@ import { UserRepository } from '@app/core-infrastructure';
 import { User } from '@app/core-domain';
 import { hashSync } from 'bcryptjs';
 
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { CreateUserDto } from './dtos/create-user.dto';
+import { UpdateUserDto } from './dtos/update-user.dto';
 
 @Injectable()
 export class UserService {
