@@ -2,7 +2,8 @@ import { Module } from '@nestjs/common';
 import { PassportModule } from '@nestjs/passport';
 import { CoreInfrastructureModule } from '@app/core-infrastructure';
 
-import { JwtModule } from '../jwt/jwt.module';
+import { JwtModule } from '@app/core-tbt/modules/jwt';
+
 import { AuthController } from './auth.controller';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { JwtRefreshStrategy } from './strategies/jwt-refresh.strategy';

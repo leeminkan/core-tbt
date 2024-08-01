@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 
-import { SessionCommandService } from '../session/commands/session-command.service';
+import { SessionCommandService } from '@app/core-tbt/modules/session';
 import { UserCommandService } from './commands/user-command.service';
 import { UserQueryService } from './queries/user-query.service';
 import { CreateUserDto } from './dtos/create-user.dto';

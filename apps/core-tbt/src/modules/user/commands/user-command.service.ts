@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
+import { hashSync } from 'bcryptjs';
+
 import { UserRepository } from '@app/core-infrastructure';
 import { User } from '@app/core-domain';
-import { hashSync } from 'bcryptjs';
 
 import { CreateUserDto } from '../dtos/create-user.dto';
 import { UpdateUserDto } from '../dtos/update-user.dto';
