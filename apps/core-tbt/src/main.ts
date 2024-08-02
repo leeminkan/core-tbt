@@ -5,6 +5,8 @@ import {
   VersioningType,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import helmet from 'helmet';
+import cookieParser from 'cookie-parser';
 
 import { AllConfigType } from './configs';
 import {
@@ -23,6 +25,19 @@ async function bootstrap() {
   app.enableVersioning({
     type: VersioningType.URI,
   });
+  app.use(cookieParser());
+  app.use(
+    helmet({
+      contentSecurityPolicy: {
+        directives: {
+          defaultSrc: ["'self'"],
+          scriptSrc: ["'self'"],
+        },
+      },
+      crossOriginEmbedderPolicy: false, // Disable if not needed
+    }),
+  );
+  app.enableCors();
 
   app.useGlobalPipes(new ValidationPipe(validationOptions)); // set validations to the application level
   app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector))); // apply transform to all responses
