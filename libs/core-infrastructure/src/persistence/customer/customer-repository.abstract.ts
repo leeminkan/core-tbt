@@ -1,11 +1,10 @@
 import { DeepPartial } from 'typeorm';
 import { Customer as CustomerDomainEntity } from '@app/core-domain';
 import {
-  Nullable,
   RepositoryOptions,
-  ShallowNever,
   ThrowNotFoundErrorOptions,
 } from '@app/core-infrastructure/types';
+import { Nullable, ShallowNever } from '@app/core-shared';
 
 export abstract class CustomerRepository {
   abstract create(

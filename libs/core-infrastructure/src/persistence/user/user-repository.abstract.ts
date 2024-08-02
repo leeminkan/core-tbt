@@ -1,10 +1,10 @@
 import { DeepPartial } from 'typeorm';
 import { User as UserDomainEntity } from '@app/core-domain';
 import {
-  Nullable,
   RepositoryOptions,
   ThrowNotFoundErrorOptions,
 } from '@app/core-infrastructure/types';
+import { Nullable } from '@app/core-shared';
 
 export abstract class UserRepository {
   abstract createUser(

@@ -14,8 +14,8 @@ import {
   bookingStatus,
   BookingUpdateStatusError,
 } from '@app/core-domain';
+import { Nullable } from '@app/core-shared';
 
-import { Nullable } from '@app/core-tbt/utils/types';
 import { CreateBookingDto } from '../dtos/create-booking.dto';
 import { UpdateBookingDto } from '../dtos/update-booking.dto';
 

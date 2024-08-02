@@ -2,8 +2,8 @@ import { DataSource, DeepPartial, EntityManager, Repository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
 
 import { User as UserDomainEntity } from '@app/core-domain';
+import { Nullable } from '@app/core-shared';
 import {
-  Nullable,
   RepositoryOptions,
   ThrowNotFoundErrorOptions,
 } from '@app/core-infrastructure/types';

@@ -12,7 +12,7 @@ import {
   DomainExceptionFilter,
   InfrastructureErrorExceptionFilter,
 } from './exceptions';
-import validationOptions from './utils/validate-options';
+import { validationOptions } from '@app/core-shared';
 import { AppModule } from './app.module';
 
 async function bootstrap() {

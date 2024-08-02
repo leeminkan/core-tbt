@@ -3,9 +3,7 @@ import { Injectable } from '@nestjs/common';
 
 import { Customer as CustomerDomainEntity } from '@app/core-domain';
 import {
-  Nullable,
   RepositoryOptions,
-  ShallowNever,
   ThrowNotFoundErrorOptions,
 } from '@app/core-infrastructure/types';
 import { RecordNotFoundException } from '@app/core-infrastructure/base.errors';
@@ -13,6 +11,7 @@ import { UnitOfWorkManager } from '@app/core-infrastructure/unit-of-work';
 import { CustomerRepository as CustomerRepositoryAbstract } from '../customer-repository.abstract';
 import { Customer as CustomerSchema } from './customer.schema';
 import { CustomerMapper } from './customer.mapper';
+import { Nullable, ShallowNever } from '@app/core-shared';
 
 @Injectable()
 export class CustomerRepository implements CustomerRepositoryAbstract {

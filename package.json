@@ -90,7 +90,8 @@
     ],
     "moduleNameMapper": {
       "^@app/core-infrastructure(|/.*)$": "<rootDir>/libs/core-infrastructure/src/$1",
-      "^@app/core-domain(|/.*)$": "<rootDir>/libs/core-domain/src/$1"
+      "^@app/core-domain(|/.*)$": "<rootDir>/libs/core-domain/src/$1",
+      "^@app/core-shared(|/.*)$": "<rootDir>/libs/core-shared/src/$1"
     }
   }
 }

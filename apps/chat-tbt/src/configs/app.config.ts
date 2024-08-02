@@ -2,7 +2,7 @@ import { registerAs } from '@nestjs/config';
 import { IsEnum, IsInt, IsOptional, Max, Min } from 'class-validator';
 
 import { AppConfig } from './app-config.type';
-import validateConfig from '.././utils/validate-config';
+import { validateConfig } from '@app/core-shared';
 
 enum Environment {
   Development = 'development',

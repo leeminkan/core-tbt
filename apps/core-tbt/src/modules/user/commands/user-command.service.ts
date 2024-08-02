@@ -3,7 +3,7 @@ import { hashSync } from 'bcryptjs';
 
 import { User } from '@app/core-domain';
 import { UserRepository } from '@app/core-infrastructure';
-import { Nullable } from '@app/core-infrastructure/types';
+import { Nullable } from '@app/core-shared';
 
 import { CreateUserDto } from '../dtos/create-user.dto';
 import { UpdateUserDto } from '../dtos/update-user.dto';

@@ -45,6 +45,15 @@
       "compilerOptions": {
         "tsConfigPath": "libs/core-domain/tsconfig.lib.json"
       }
+    },
+    "core-shared": {
+      "type": "library",
+      "root": "libs/core-shared",
+      "entryFile": "index",
+      "sourceRoot": "libs/core-shared/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/core-shared/tsconfig.lib.json"
+      }
     }
   }
 }
