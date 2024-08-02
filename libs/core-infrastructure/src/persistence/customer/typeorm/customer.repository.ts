@@ -1,5 +1,5 @@
 import { DataSource, DeepPartial, EntityManager, Repository } from 'typeorm';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 
 import { Customer as CustomerDomainEntity } from '@app/core-domain';
 import {
@@ -8,6 +8,7 @@ import {
   ShallowNever,
   ThrowNotFoundErrorOptions,
 } from '@app/core-infrastructure/types';
+import { RecordNotFoundException } from '@app/core-infrastructure/base.errors';
 import { UnitOfWorkManager } from '@app/core-infrastructure/unit-of-work';
 import { CustomerRepository as CustomerRepositoryAbstract } from '../customer-repository.abstract';
 import { Customer as CustomerSchema } from './customer.schema';
@@ -94,7 +95,6 @@ export class CustomerRepository implements CustomerRepositoryAbstract {
         'throwNotFoundError' in options &&
         options.throwNotFoundError
       ) {
-        throw new NotFoundException(`Record with ID ${id} not found`);
       }
       return null;
     }
@@ -119,7 +119,7 @@ export class CustomerRepository implements CustomerRepositoryAbstract {
     const row = await this.findById(id, options);
 
     if (!row) {
-      throw new NotFoundException(`Record with ID ${id} not found`);
+      throw new RecordNotFoundException();
     }
 
     return await this.updateById(id, data, options);

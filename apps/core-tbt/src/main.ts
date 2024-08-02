@@ -7,6 +7,11 @@ import {
 import { ConfigService } from '@nestjs/config';
 
 import { AllConfigType } from './configs';
+import {
+  HttpExceptionFilter,
+  DomainExceptionFilter,
+  InfrastructureErrorExceptionFilter,
+} from './exceptions';
 import validationOptions from './utils/validate-options';
 import { AppModule } from './app.module';
 
@@ -21,6 +26,9 @@ async function bootstrap() {
 
   app.useGlobalPipes(new ValidationPipe(validationOptions)); // set validations to the application level
   app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector))); // apply transform to all responses
+  app.useGlobalFilters(new DomainExceptionFilter());
+  app.useGlobalFilters(new InfrastructureErrorExceptionFilter());
+  app.useGlobalFilters(new HttpExceptionFilter());
 
   await app.listen(configService.getOrThrow('app.port', { infer: true }));
 }

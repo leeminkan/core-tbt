@@ -1,5 +1,5 @@
 import { DataSource, DeepPartial, EntityManager, Repository } from 'typeorm';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 
 import { User as UserDomainEntity } from '@app/core-domain';
 import {
@@ -11,6 +11,7 @@ import { UnitOfWorkManager } from '@app/core-infrastructure/unit-of-work';
 import { UserRepository as UserRepositoryAbstract } from '../user-repository.abstract';
 import { User as UserSchema } from './user.schema';
 import { UserMapper } from './user.mapper';
+import { RecordNotFoundException } from '@app/core-infrastructure/base.errors';
 
 @Injectable()
 export class UserRepository implements UserRepositoryAbstract {
@@ -90,7 +91,7 @@ export class UserRepository implements UserRepositoryAbstract {
         'throwNotFoundError' in options &&
         options.throwNotFoundError
       ) {
-        throw new NotFoundException(`Record with ID ${id} not found`);
+        throw new RecordNotFoundException();
       }
       return null;
     }
@@ -107,7 +108,7 @@ export class UserRepository implements UserRepositoryAbstract {
 
     if (!user) {
       if (options?.throwNotFoundError) {
-        throw new NotFoundException(`User with username ${username} not found`);
+        throw new RecordNotFoundException();
       }
       return null;
     }
@@ -132,7 +133,7 @@ export class UserRepository implements UserRepositoryAbstract {
     const user = await this.findById(id, options);
 
     if (!user) {
-      throw new NotFoundException(`User with ID ${id} not found`);
+      throw new RecordNotFoundException();
     }
 
     return await this.updateUserById(id, data, options);

@@ -1,10 +1,13 @@
 import { DataSource, DeepPartial, EntityManager, Repository } from 'typeorm';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 
 import { Booking as BookingDomainEntity } from '@app/core-domain';
 import { RepositoryOptions } from '@app/core-infrastructure/types';
 import { UnitOfWorkManager } from '@app/core-infrastructure/unit-of-work';
-import { VersionMismatchError } from '@app/core-infrastructure/base.errors';
+import {
+  RecordNotFoundException,
+  VersionMismatchError,
+} from '@app/core-infrastructure/base.errors';
 import { BookingRepository as BookingRepositoryAbstract } from '../booking-repository.abstract';
 import { Booking as BookingSchema } from './booking.schema';
 import { BookingMapper } from './booking.mapper';
@@ -122,7 +125,7 @@ export class BookingRepository implements BookingRepositoryAbstract {
     const row = await this.findById(id, options);
 
     if (!row) {
-      throw new NotFoundException(`Record with ID ${id} not found`);
+      throw new RecordNotFoundException();
     }
 
     return await this.updateById(id, data, options);
