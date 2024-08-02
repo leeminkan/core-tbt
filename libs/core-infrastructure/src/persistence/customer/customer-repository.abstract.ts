@@ -3,6 +3,7 @@ import { Customer as CustomerDomainEntity } from '@app/core-domain';
 import {
   Nullable,
   RepositoryOptions,
+  ShallowNever,
   ThrowNotFoundErrorOptions,
 } from '@app/core-infrastructure/types';
 
@@ -23,12 +24,10 @@ export abstract class CustomerRepository {
     totalCount: number;
   }>;
 
-  // TODO: function overload does not work well with autocomplete! Pls check...
   abstract findById(
     id: number,
-    options?: RepositoryOptions,
+    options?: RepositoryOptions & ShallowNever<ThrowNotFoundErrorOptions>,
   ): Promise<Nullable<CustomerDomainEntity>>;
-
   abstract findById(
     id: number,
     options: RepositoryOptions & ThrowNotFoundErrorOptions,

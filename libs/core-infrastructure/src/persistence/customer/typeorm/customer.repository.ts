@@ -5,6 +5,7 @@ import { Customer as CustomerDomainEntity } from '@app/core-domain';
 import {
   Nullable,
   RepositoryOptions,
+  ShallowNever,
   ThrowNotFoundErrorOptions,
 } from '@app/core-infrastructure/types';
 import { UnitOfWorkManager } from '@app/core-infrastructure/unit-of-work';
@@ -72,7 +73,7 @@ export class CustomerRepository implements CustomerRepositoryAbstract {
 
   async findById(
     id: number,
-    options?: RepositoryOptions,
+    options?: RepositoryOptions & ShallowNever<ThrowNotFoundErrorOptions>,
   ): Promise<Nullable<CustomerDomainEntity>>;
   async findById(
     id: number,
@@ -81,7 +82,7 @@ export class CustomerRepository implements CustomerRepositoryAbstract {
   async findById(
     id: number,
     options?:
-      | RepositoryOptions
+      | (RepositoryOptions & ShallowNever<ThrowNotFoundErrorOptions>)
       | (RepositoryOptions & ThrowNotFoundErrorOptions),
   ): Promise<Nullable<CustomerDomainEntity>> {
     const repository = this.getRepository(options?.unitOfWorkManager);

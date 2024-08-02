@@ -14,3 +14,6 @@ export type OrNeverType<T> = T | never;
 export type DeepPartial<T> = {
   [P in keyof T]?: DeepPartial<T[P]>;
 };
+export type ShallowNever<T> = {
+  [P in keyof T]?: never;
+};
