@@ -2,23 +2,31 @@ import { DataSource, DeepPartial, EntityManager, Repository } from 'typeorm';
 import { Injectable, NotFoundException } from '@nestjs/common';
 
 import { User as UserDomainEntity } from '@app/core-domain';
-import { RepositoryOptions } from '@app/core-infrastructure/types';
+import {
+  Nullable,
+  RepositoryOptions,
+  ThrowNotFoundErrorOptions,
+} from '@app/core-infrastructure/types';
 import { UnitOfWorkManager } from '@app/core-infrastructure/unit-of-work';
 import { UserRepository as UserRepositoryAbstract } from '../user-repository.abstract';
 import { User as UserSchema } from './user.schema';
 import { UserMapper } from './user.mapper';
 
 @Injectable()
-export class UserRepository
-  extends Repository<UserSchema>
-  implements UserRepositoryAbstract
-{
+export class UserRepository implements UserRepositoryAbstract {
+  private repository: Repository<UserSchema>;
+  private mapper: UserMapper;
+
   constructor(private dataSource: DataSource) {
-    super(UserSchema, dataSource.createEntityManager());
+    this.repository = new Repository<UserSchema>(
+      UserSchema,
+      dataSource.createEntityManager(),
+    );
+    this.mapper = new UserMapper();
   }
 
   getRepository(manager?: UnitOfWorkManager) {
-    if (!manager) return this;
+    if (!manager) return this.repository;
 
     if (!(manager instanceof EntityManager)) {
       throw new Error('Manager is not supported');
@@ -34,7 +42,7 @@ export class UserRepository
     const repository = this.getRepository(options?.unitOfWorkManager);
     const prepareUser = repository.create(data);
     const user = await repository.save(prepareUser);
-    return UserMapper.mapToDomain(user);
+    return this.mapper.mapToDomain(user);
   }
 
   async findAllAndCountUser(
@@ -54,21 +62,57 @@ export class UserRepository
     });
 
     return {
-      data: data.map((item) => UserMapper.mapToDomain(item)),
+      data: data.map((item) => this.mapper.mapToDomain(item)),
       totalCount,
     };
   }
 
-  async findUserById(id: number, options?: RepositoryOptions) {
+  async findById(
+    id: number,
+    options?: RepositoryOptions,
+  ): Promise<Nullable<UserDomainEntity>>;
+  async findById(
+    id: number,
+    options: RepositoryOptions & ThrowNotFoundErrorOptions,
+  ): Promise<UserDomainEntity>;
+  async findById(
+    id: number,
+    options?:
+      | RepositoryOptions
+      | (RepositoryOptions & ThrowNotFoundErrorOptions),
+  ): Promise<Nullable<UserDomainEntity>> {
     const repository = this.getRepository(options?.unitOfWorkManager);
-    const user = await repository.findOneBy({ id });
-    return user ? UserMapper.mapToDomain(user) : null;
+    const row = await repository.findOneBy({ id });
+
+    if (!row) {
+      if (
+        options &&
+        'throwNotFoundError' in options &&
+        options.throwNotFoundError
+      ) {
+        throw new NotFoundException(`Record with ID ${id} not found`);
+      }
+      return null;
+    }
+
+    return this.mapper.mapToDomain(row);
   }
 
-  async findUserByUsername(username: string, options?: RepositoryOptions) {
+  async findUserByUsername(
+    username: string,
+    options?: RepositoryOptions & ThrowNotFoundErrorOptions,
+  ) {
     const repository = this.getRepository(options?.unitOfWorkManager);
     const user = await repository.findOneBy({ username });
-    return user ? UserMapper.mapToDomain(user) : null;
+
+    if (!user) {
+      if (options?.throwNotFoundError) {
+        throw new NotFoundException(`User with username ${username} not found`);
+      }
+      return null;
+    }
+
+    return this.mapper.mapToDomain(user);
   }
 
   async updateUserById(
@@ -85,7 +129,7 @@ export class UserRepository
     data: DeepPartial<UserDomainEntity>,
     options?: RepositoryOptions,
   ) {
-    const user = await this.findUserById(id, options);
+    const user = await this.findById(id, options);
 
     if (!user) {
       throw new NotFoundException(`User with ID ${id} not found`);

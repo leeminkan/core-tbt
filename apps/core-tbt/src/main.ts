@@ -7,6 +7,7 @@ import {
 import { ConfigService } from '@nestjs/config';
 
 import { AllConfigType } from './configs';
+import validationOptions from './utils/validate-options';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
@@ -18,7 +19,7 @@ async function bootstrap() {
     type: VersioningType.URI,
   });
 
-  app.useGlobalPipes(new ValidationPipe()); // set validations to the application level
+  app.useGlobalPipes(new ValidationPipe(validationOptions)); // set validations to the application level
   app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector))); // apply transform to all responses
 
   await app.listen(configService.getOrThrow('app.port', { infer: true }));

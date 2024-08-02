@@ -19,12 +19,15 @@ class EnvironmentVariablesValidator {
 }
 
 export const authConfig = registerAs<AuthConfig>('auth', () => {
-  validateConfig(process.env, EnvironmentVariablesValidator);
+  const validatedValue = validateConfig<EnvironmentVariablesValidator>(
+    process.env,
+    EnvironmentVariablesValidator,
+  );
 
   return {
-    secret: process.env.AUTH_JWT_SECRET,
-    expires: process.env.AUTH_JWT_TOKEN_EXPIRES_IN,
-    refreshSecret: process.env.AUTH_REFRESH_SECRET,
-    refreshExpires: process.env.AUTH_REFRESH_TOKEN_EXPIRES_IN,
+    secret: validatedValue.AUTH_JWT_SECRET,
+    expires: validatedValue.AUTH_JWT_TOKEN_EXPIRES_IN,
+    refreshSecret: validatedValue.AUTH_REFRESH_SECRET,
+    refreshExpires: validatedValue.AUTH_REFRESH_TOKEN_EXPIRES_IN,
   };
 });

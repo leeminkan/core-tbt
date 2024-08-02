@@ -22,13 +22,16 @@ class EnvironmentVariablesValidator {
 }
 
 export const databaseConfig = registerAs<DatabaseConfig>('database', () => {
-  validateConfig(process.env, EnvironmentVariablesValidator);
+  const validatedValue = validateConfig<EnvironmentVariablesValidator>(
+    process.env,
+    EnvironmentVariablesValidator,
+  );
 
   return {
-    host: process.env.POSTGRES_HOST,
-    port: parseInt(process.env.POSTGRES_PORT, 10),
-    database: process.env.POSTGRES_DB,
-    username: process.env.POSTGRES_USER,
-    password: process.env.POSTGRES_PASSWORD,
+    host: validatedValue.POSTGRES_HOST,
+    port: validatedValue.POSTGRES_PORT,
+    database: validatedValue.POSTGRES_DB,
+    username: validatedValue.POSTGRES_USER,
+    password: validatedValue.POSTGRES_PASSWORD,
   };
 });

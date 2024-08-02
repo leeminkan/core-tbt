@@ -1,6 +1,10 @@
 import { DeepPartial } from 'typeorm';
 import { User as UserDomainEntity } from '@app/core-domain';
-import { RepositoryOptions } from '@app/core-infrastructure/types';
+import {
+  Nullable,
+  RepositoryOptions,
+  ThrowNotFoundErrorOptions,
+} from '@app/core-infrastructure/types';
 
 export abstract class UserRepository {
   abstract createUser(
@@ -19,15 +23,20 @@ export abstract class UserRepository {
     totalCount: number;
   }>;
 
-  abstract findUserById(
+  abstract findById(
     id: number,
     options?: RepositoryOptions,
+  ): Promise<Nullable<UserDomainEntity>>;
+
+  abstract findById(
+    id: number,
+    options: RepositoryOptions & ThrowNotFoundErrorOptions,
   ): Promise<UserDomainEntity>;
 
   abstract findUserByUsername(
     username: string,
-    options?: RepositoryOptions,
-  ): Promise<UserDomainEntity>;
+    options?: RepositoryOptions & ThrowNotFoundErrorOptions,
+  ): Promise<Nullable<UserDomainEntity>>;
 
   abstract updateUserById(
     id: number,

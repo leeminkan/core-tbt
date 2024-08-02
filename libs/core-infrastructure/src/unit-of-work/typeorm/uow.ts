@@ -1,8 +1,12 @@
 import { InjectEntityManager } from '@nestjs/typeorm';
 import { EntityManager } from 'typeorm';
 import { UnitOfWork } from '../uow.abstract';
+import {
+  ExceedRetryTransactionError,
+  VersionMismatchError,
+} from '@app/core-infrastructure/base.errors';
 
-class TypeOrmTransaction implements UnitOfWork {
+class TypeOrmTransaction {
   constructor(private manager: EntityManager) {
     this.manager = this.manager;
   }
@@ -13,7 +17,8 @@ class TypeOrmTransaction implements UnitOfWork {
     return await this.manager.transaction(async (manager) => {
       this.manager = manager;
       const res = await fn(manager);
-      this.manager = null;
+      // TODO: check why we need this code
+      // this.manager = null;
       return res;
     });
   }
@@ -32,6 +37,30 @@ export class TypeOrmUnitOfWork implements UnitOfWork {
   ): Promise<T> {
     const transaction = new TypeOrmTransaction(this.manager);
     return await transaction.runInTransaction(fn);
+  }
+
+  async runInTransactionWithRetry<T>(
+    fn: (manager: EntityManager) => Promise<T>,
+    maxRetries = 3,
+    retryDelay = 0,
+  ): Promise<T> {
+    let retryCount = 0;
+
+    while (retryCount < maxRetries) {
+      try {
+        const transaction = new TypeOrmTransaction(this.manager);
+        return await transaction.runInTransaction(fn);
+      } catch (error) {
+        const isRetryableError = error instanceof VersionMismatchError;
+        if (!isRetryableError) {
+          throw error;
+        }
+        retryCount++;
+        await new Promise((resolve) => setTimeout(resolve, retryDelay));
+      }
+    }
+
+    throw new ExceedRetryTransactionError();
   }
 }
 

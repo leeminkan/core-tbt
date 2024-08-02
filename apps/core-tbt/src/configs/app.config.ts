@@ -19,18 +19,23 @@ class EnvironmentVariablesValidator {
   @Min(0)
   @Max(65535)
   @IsOptional()
+  PORT: number;
+
+  @IsInt()
+  @Min(0)
+  @Max(65535)
+  @IsOptional()
   APP_PORT: number;
 }
 
 export const appConfig = registerAs<AppConfig>('app', () => {
-  validateConfig(process.env, EnvironmentVariablesValidator);
+  const validatedValue = validateConfig<EnvironmentVariablesValidator>(
+    process.env,
+    EnvironmentVariablesValidator,
+  );
 
   return {
-    nodeEnv: process.env.NODE_ENV || 'development',
-    port: process.env.APP_PORT
-      ? parseInt(process.env.APP_PORT, 10)
-      : process.env.PORT
-      ? parseInt(process.env.PORT, 10)
-      : 3000,
+    nodeEnv: validatedValue.NODE_ENV || 'development',
+    port: validatedValue.APP_PORT ?? validatedValue.PORT ?? 3000,
   };
 });

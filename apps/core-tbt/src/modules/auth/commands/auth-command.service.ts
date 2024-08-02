@@ -64,7 +64,7 @@ export class AuthCommandService {
       .update(randomStringGenerator())
       .digest('hex');
 
-    const user = await this.userRepository.findUserById(session.userId);
+    const user = await this.userRepository.findById(session.userId);
 
     if (!user) {
       throw new UnauthorizedException();

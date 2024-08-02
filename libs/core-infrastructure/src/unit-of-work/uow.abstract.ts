@@ -9,4 +9,10 @@ export abstract class UnitOfWork {
   abstract runInTransaction<R>(
     fn: (manager: UnitOfWorkManager) => Promise<R>,
   ): Promise<R>;
+
+  abstract runInTransactionWithRetry<R>(
+    fn: (manager: UnitOfWorkManager) => Promise<R>,
+    maxRetries?: number,
+    retryDelay?: number,
+  ): Promise<R>;
 }

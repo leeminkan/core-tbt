@@ -1,7 +1,12 @@
 import { DynamicModule, Module, Provider } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { UserRepository, SessionRepository } from './persistence';
+import {
+  UserRepository,
+  SessionRepository,
+  CustomerRepository,
+  BookingRepository,
+} from './persistence';
 import {
   User,
   UserRepository as TypeOrmUserRepository,
@@ -10,6 +15,14 @@ import {
   Session,
   SessionRepository as TypeOrmSessionRepository,
 } from './persistence/session/typeorm';
+import {
+  Customer,
+  CustomerRepository as TypeOrmCustomerRepository,
+} from './persistence/customer/typeorm';
+import {
+  Booking,
+  BookingRepository as TypeOrmBookingRepository,
+} from './persistence/booking/typeorm';
 
 import {
   CoreInfrastructureOption,
@@ -47,7 +60,7 @@ export class CoreInfrastructureModule {
             return {
               ...options.typeOrmOptions,
               // override options
-              entities: [User, Session],
+              entities: [User, Session, Customer, Booking],
             };
           },
           inject: [CORE_INFRASTRUCTURE_OPTIONS],
@@ -65,6 +78,14 @@ export class CoreInfrastructureModule {
       {
         provide: SessionRepository,
         useClass: TypeOrmSessionRepository,
+      },
+      {
+        provide: CustomerRepository,
+        useClass: TypeOrmCustomerRepository,
+      },
+      {
+        provide: BookingRepository,
+        useClass: TypeOrmBookingRepository,
       },
     ];
     return {
