@@ -1,8 +1,9 @@
 import { registerAs } from '@nestjs/config';
 import { IsInt, IsString } from 'class-validator';
 
-import { RedisConfig } from './redis-config.type';
 import { validateConfig } from '@libs/core-shared';
+
+import { RedisConfig } from './redis-config.type';
 
 class EnvironmentVariablesValidator {
   @IsString()
