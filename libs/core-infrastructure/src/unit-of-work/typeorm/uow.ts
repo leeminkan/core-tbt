@@ -6,24 +6,6 @@ import {
   VersionMismatchError,
 } from '@app/core-infrastructure/base.errors';
 
-class TypeOrmTransaction {
-  constructor(private manager: EntityManager) {
-    this.manager = this.manager;
-  }
-
-  async runInTransaction<T>(
-    fn: (manager: EntityManager) => Promise<T>,
-  ): Promise<T> {
-    return await this.manager.transaction(async (manager) => {
-      this.manager = manager;
-      const res = await fn(manager);
-      // TODO: check why we need this code
-      // this.manager = null;
-      return res;
-    });
-  }
-}
-
 export class TypeOrmUnitOfWork implements UnitOfWork {
   constructor(
     @InjectEntityManager()
@@ -35,8 +17,7 @@ export class TypeOrmUnitOfWork implements UnitOfWork {
   async runInTransaction<T>(
     fn: (manager: EntityManager) => Promise<T>,
   ): Promise<T> {
-    const transaction = new TypeOrmTransaction(this.manager);
-    return await transaction.runInTransaction(fn);
+    return await this.manager.transaction(fn);
   }
 
   async runInTransactionWithRetry<T>(
@@ -48,8 +29,7 @@ export class TypeOrmUnitOfWork implements UnitOfWork {
 
     while (retryCount < maxRetries) {
       try {
-        const transaction = new TypeOrmTransaction(this.manager);
-        return await transaction.runInTransaction(fn);
+        return await this.manager.transaction(fn);
       } catch (error) {
         const isRetryableError = error instanceof VersionMismatchError;
         if (!isRetryableError) {
