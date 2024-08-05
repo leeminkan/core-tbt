@@ -16,12 +16,12 @@ export class CustomerMapper
   }
 
   mapToDomain(
-    InfrastructureSchema: CustomerInfrastructureSchema,
+    infrastructureSchema: CustomerInfrastructureSchema,
   ): CustomerDomainEntity {
     return plainToInstance(CustomerDomainEntity, {
-      id: InfrastructureSchema.id,
-      firstName: InfrastructureSchema.first_name,
-      lastName: InfrastructureSchema.last_name,
+      id: infrastructureSchema.id,
+      firstName: infrastructureSchema.first_name,
+      lastName: infrastructureSchema.last_name,
     });
   }
 }

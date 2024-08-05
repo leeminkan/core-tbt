@@ -18,14 +18,14 @@ export class ProductMapper
   }
 
   mapToDomain(
-    InfrastructureSchema: ProductInfrastructureSchema,
+    infrastructureSchema: ProductInfrastructureSchema,
   ): ProductDomainEntity {
     return plainToInstance(ProductDomainEntity, {
-      id: InfrastructureSchema.id,
-      name: InfrastructureSchema.name,
-      description: InfrastructureSchema.description,
-      image: InfrastructureSchema.image,
-      price: InfrastructureSchema.price,
+      id: infrastructureSchema.id,
+      name: infrastructureSchema.name,
+      description: infrastructureSchema.description,
+      image: infrastructureSchema.image,
+      price: infrastructureSchema.price,
     });
   }
 }

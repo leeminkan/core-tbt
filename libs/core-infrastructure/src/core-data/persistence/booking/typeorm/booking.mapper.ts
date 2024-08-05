@@ -19,15 +19,15 @@ export class BookingMapper
   }
 
   mapToDomain(
-    InfrastructureSchema: BookingInfrastructureSchema,
+    infrastructureSchema: BookingInfrastructureSchema,
   ): BookingDomainEntity {
     return plainToInstance(BookingDomainEntity, {
-      id: InfrastructureSchema.id,
-      customerId: InfrastructureSchema.customer_id,
-      startTime: InfrastructureSchema.start_time,
-      endTime: InfrastructureSchema.end_time,
-      status: InfrastructureSchema.status,
-      version: InfrastructureSchema.version,
+      id: infrastructureSchema.id,
+      customerId: infrastructureSchema.customer_id,
+      startTime: infrastructureSchema.start_time,
+      endTime: infrastructureSchema.end_time,
+      status: infrastructureSchema.status,
+      version: infrastructureSchema.version,
     });
   }
 }
