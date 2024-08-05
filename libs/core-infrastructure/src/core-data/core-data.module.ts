@@ -32,13 +32,16 @@ import {
 
 @Module({})
 export class CoreDataModule {
+  static defaultTypeormEntites = [User, Session, Customer, Booking];
+
   static forRoot(options: CoreDataOption): DynamicModule {
     return {
       module: CoreDataModule,
       imports: [
         TypeOrmModule.forRoot({
           ...options.typeOrmOptions,
-          entities: [User, Session],
+          // override options
+          entities: this.defaultTypeormEntites,
         }),
       ],
     };
@@ -60,7 +63,7 @@ export class CoreDataModule {
             return {
               ...options.typeOrmOptions,
               // override options
-              entities: [User, Session, Customer, Booking],
+              entities: this.defaultTypeormEntites,
             };
           },
           inject: [CORE_DATA_OPTIONS],
