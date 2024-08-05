@@ -1,11 +1,11 @@
 import { Column, Entity, PrimaryGeneratedColumn, VersionColumn } from 'typeorm';
 
-import { BaseSchema } from '@app/core-infrastructure/base.schema';
+import { TypeormBaseSchema } from '@libs/core-infrastructure/core-data/typeorm-base.schema';
 
 @Entity({
   name: 'bookings',
 })
-export class Booking extends BaseSchema {
+export class Booking extends TypeormBaseSchema {
   /**
    * this decorator will help to auto generate id for the table.
    */

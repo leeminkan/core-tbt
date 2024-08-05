@@ -1,6 +1,6 @@
 import { Catch, ArgumentsHost, ExceptionFilter } from '@nestjs/common';
 import { Request, Response } from 'express';
-import { BaseInfrastructureError } from '@app/core-infrastructure/base.errors';
+import { BaseInfrastructureError } from '@libs/core-infrastructure/base.errors';
 
 @Catch(BaseInfrastructureError)
 export class InfrastructureErrorExceptionFilter implements ExceptionFilter {

@@ -1,12 +1,13 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
-import { BaseSchema } from '../../../base.schema';
+import { TypeormBaseSchema } from '@libs/core-infrastructure/core-data/typeorm-base.schema';
+
 import { Session } from '../../session/typeorm/session.schema';
 
 @Entity({
   name: 'users',
 })
-export class User extends BaseSchema {
+export class User extends TypeormBaseSchema {
   /**
    * this decorator will help to auto generate id for the table.
    */

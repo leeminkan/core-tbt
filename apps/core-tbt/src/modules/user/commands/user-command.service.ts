@@ -1,9 +1,9 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { hashSync } from 'bcryptjs';
 
-import { User } from '@app/core-domain';
-import { UserRepository } from '@app/core-infrastructure';
-import { Nullable } from '@app/core-shared';
+import { User } from '@libs/core-domain';
+import { UserRepository } from '@libs/core-infrastructure';
+import { Nullable } from '@libs/core-shared';
 
 import { CreateUserDto } from '../dtos/create-user.dto';
 import { UpdateUserDto } from '../dtos/update-user.dto';

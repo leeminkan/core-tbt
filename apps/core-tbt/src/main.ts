@@ -14,7 +14,7 @@ import {
   DomainExceptionFilter,
   InfrastructureErrorExceptionFilter,
 } from './exceptions';
-import { validationOptions } from '@app/core-shared';
+import { validationOptions } from '@libs/core-shared';
 import { AppModule } from './app.module';
 
 async function bootstrap() {

@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { CoreInfrastructureModule } from '@app/core-infrastructure';
+import { CoreDataModule } from '@libs/core-infrastructure';
 
 import { SessionCommandModule } from '@app/core-tbt/modules/session';
 import { UserCommandModule } from './commands/user-command.module';
@@ -8,7 +8,7 @@ import { UserController } from './user.controller';
 
 @Module({
   imports: [
-    CoreInfrastructureModule.forFeature(),
+    CoreDataModule.forFeature(),
     UserCommandModule,
     UserQueryModule,
     SessionCommandModule,

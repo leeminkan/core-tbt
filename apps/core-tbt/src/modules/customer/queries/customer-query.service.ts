@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { CustomerRepository } from '@app/core-infrastructure';
-import { Customer } from '@app/core-domain';
+import { CustomerRepository } from '@libs/core-infrastructure';
+import { Customer } from '@libs/core-domain';
 
 @Injectable()
 export class CustomerQueryService {

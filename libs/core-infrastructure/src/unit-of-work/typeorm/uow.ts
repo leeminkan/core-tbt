@@ -1,10 +1,11 @@
 import { InjectEntityManager } from '@nestjs/typeorm';
 import { EntityManager } from 'typeorm';
-import { UnitOfWork } from '../uow.abstract';
+
 import {
   ExceedRetryTransactionError,
   VersionMismatchError,
-} from '@app/core-infrastructure/base.errors';
+} from '@libs/core-infrastructure/base.errors';
+import { UnitOfWork } from '../uow.abstract';
 
 export class TypeOrmUnitOfWork implements UnitOfWork {
   constructor(

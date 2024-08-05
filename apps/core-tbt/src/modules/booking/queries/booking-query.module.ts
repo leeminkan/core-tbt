@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
-import { CoreInfrastructureModule } from '@app/core-infrastructure';
+import { CoreDataModule } from '@libs/core-infrastructure';
 
 import { BookingQueryService } from './booking-query.service';
 
 @Module({
-  imports: [CoreInfrastructureModule.forFeature()],
+  imports: [CoreDataModule.forFeature()],
   providers: [BookingQueryService],
   exports: [BookingQueryService],
 })

@@ -1,6 +1,6 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { randomStringGenerator } from '@nestjs/common/utils/random-string-generator.util';
-import { UserRepository, SessionRepository } from '@app/core-infrastructure';
+import { UserRepository, SessionRepository } from '@libs/core-infrastructure';
 import { createHash } from 'node:crypto';
 import { compareSync } from 'bcryptjs';
 

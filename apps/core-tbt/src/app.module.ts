@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { CoreInfrastructureModule } from '@app/core-infrastructure';
+import { CoreDataModule } from '@libs/core-infrastructure';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -23,7 +23,7 @@ import { BookingModule } from './modules/booking';
       isGlobal: true,
       load: [appConfig, databaseConfig, authConfig],
     }),
-    CoreInfrastructureModule.forRootAsync({
+    CoreDataModule.forRootAsync({
       inject: [ConfigService],
       useFactory: async (config: ConfigService<AllConfigType>) => {
         return {

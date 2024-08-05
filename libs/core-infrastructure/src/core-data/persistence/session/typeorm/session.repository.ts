@@ -1,9 +1,10 @@
 import { DataSource, DeepPartial, EntityManager, Repository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
 
-import { Session as SessionDomainEntity } from '@app/core-domain';
-import { RepositoryOptions } from '@app/core-infrastructure/types';
-import { UnitOfWorkManager } from '@app/core-infrastructure/unit-of-work';
+import { Session as SessionDomainEntity } from '@libs/core-domain';
+import { RepositoryOptions } from '@libs/core-infrastructure/core-data/repository.types';
+import { UnitOfWorkManager } from '@libs/core-infrastructure/unit-of-work';
+
 import { Session as SessionSchema } from './session.schema';
 import { SessionMapper } from './session.mapper';
 

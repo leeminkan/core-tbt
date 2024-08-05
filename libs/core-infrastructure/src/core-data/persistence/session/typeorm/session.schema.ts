@@ -6,14 +6,14 @@ import {
   JoinColumn,
 } from 'typeorm';
 
-import { BaseSchema } from '../../../base.schema';
+import { TypeormBaseSchema } from '@libs/core-infrastructure/core-data/typeorm-base.schema';
 
 import { User as UserSchema } from '../../user/typeorm';
 
 @Entity({
   name: 'sessions',
 })
-export class Session extends BaseSchema {
+export class Session extends TypeormBaseSchema {
   @PrimaryGeneratedColumn('uuid') // UUID primary key
   id: string;
 

@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { PassportModule } from '@nestjs/passport';
-import { CoreInfrastructureModule } from '@app/core-infrastructure';
+import { CoreDataModule } from '@libs/core-infrastructure';
 
 import { JwtModule } from '@app/core-tbt/modules/jwt';
 
@@ -11,7 +11,7 @@ import { AuthCommandModule } from './commands';
 
 @Module({
   imports: [
-    CoreInfrastructureModule.forFeature(),
+    CoreDataModule.forFeature(),
     JwtModule,
     PassportModule,
     AuthCommandModule,

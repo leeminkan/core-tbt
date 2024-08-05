@@ -1,11 +1,13 @@
 import { plainToInstance } from 'class-transformer';
-import { Session as SessionDomainEntity } from '@app/core-domain';
+import { Session as SessionDomainEntity } from '@libs/core-domain';
 
-import { Session as SessionOrmSchema } from './session.schema';
+import { Session as SessionInfrastructureSchema } from './session.schema';
 
 export class SessionMapper {
-  static mapToORM(sessionEntity: SessionDomainEntity): SessionOrmSchema {
-    const orm = new SessionOrmSchema();
+  static mapToORM(
+    sessionEntity: SessionDomainEntity,
+  ): SessionInfrastructureSchema {
+    const orm = new SessionInfrastructureSchema();
     orm.id = sessionEntity.id;
     orm.user_id = sessionEntity.userId;
     orm.is_logout = sessionEntity.isLogout;
@@ -13,7 +15,9 @@ export class SessionMapper {
     return orm;
   }
 
-  static mapToDomain(sessionOrm: SessionOrmSchema): SessionDomainEntity {
+  static mapToDomain(
+    sessionOrm: SessionInfrastructureSchema,
+  ): SessionDomainEntity {
     return plainToInstance(SessionDomainEntity, {
       id: sessionOrm.id,
       userId: sessionOrm.user_id,

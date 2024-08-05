@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { BookingRepository } from '@app/core-infrastructure';
-import { Booking } from '@app/core-domain';
+import { BookingRepository } from '@libs/core-infrastructure';
+import { Booking } from '@libs/core-domain';
 
 @Injectable()
 export class BookingQueryService {

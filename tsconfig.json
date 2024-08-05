@@ -19,28 +19,28 @@
     "noFallthroughCasesInSwitch": false,
     "esModuleInterop": true,
     "paths": {
-      "@app/core-infrastructure": [
-        "libs/core-infrastructure/src"
-      ],
-      "@app/core-infrastructure/*": [
-        "libs/core-infrastructure/src/*"
-      ],
-      "@app/core-domain": [
-        "libs/core-domain/src"
-      ],
-      "@app/core-domain/*": [
-        "libs/core-domain/src/*"
-      ],
       "@app/core-tbt": [
         "apps/core-tbt/src"
       ],
       "@app/core-tbt/*": [
         "apps/core-tbt/src/*"
       ],
-      "@app/core-shared": [
+      "@libs/core-infrastructure": [
+        "libs/core-infrastructure/src"
+      ],
+      "@libs/core-infrastructure/*": [
+        "libs/core-infrastructure/src/*"
+      ],
+      "@libs/core-domain": [
+        "libs/core-domain/src"
+      ],
+      "@libs/core-domain/*": [
+        "libs/core-domain/src/*"
+      ],
+      "@libs/core-shared": [
         "libs/core-shared/src"
       ],
-      "@app/core-shared/*": [
+      "@libs/core-shared/*": [
         "libs/core-shared/src/*"
       ]
     }

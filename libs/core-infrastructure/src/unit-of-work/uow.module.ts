@@ -3,8 +3,6 @@ import { UnitOfWork } from './uow.abstract';
 import { TypeOrmUnitOfWork } from './typeorm/uow';
 
 @Module({
-  imports: [],
-  controllers: [],
   providers: [
     {
       provide: UnitOfWork,

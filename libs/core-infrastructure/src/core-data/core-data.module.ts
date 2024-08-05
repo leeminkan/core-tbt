@@ -25,16 +25,16 @@ import {
 } from './persistence/booking/typeorm';
 
 import {
-  CoreInfrastructureOption,
-  CoreInfrastructureAsyncOptions,
-  CORE_INFRASTRUCTURE_OPTIONS,
-} from './core-infrastructure.types';
+  CoreDataOption,
+  CoreDataAsyncOptions,
+  CORE_DATA_OPTIONS,
+} from './core-data.types';
 
 @Module({})
-export class CoreInfrastructureModule {
-  static forRoot(options: CoreInfrastructureOption): DynamicModule {
+export class CoreDataModule {
+  static forRoot(options: CoreDataOption): DynamicModule {
     return {
-      module: CoreInfrastructureModule,
+      module: CoreDataModule,
       imports: [
         TypeOrmModule.forRoot({
           ...options.typeOrmOptions,
@@ -44,26 +44,26 @@ export class CoreInfrastructureModule {
     };
   }
 
-  static forRootAsync(options: CoreInfrastructureAsyncOptions): DynamicModule {
+  static forRootAsync(options: CoreDataAsyncOptions): DynamicModule {
     return {
-      module: CoreInfrastructureModule,
+      module: CoreDataModule,
       imports: [
         TypeOrmModule.forRootAsync({
           extraProviders: [
             {
-              provide: CORE_INFRASTRUCTURE_OPTIONS,
+              provide: CORE_DATA_OPTIONS,
               useFactory: options.useFactory,
               inject: options.inject ?? [],
             },
           ],
-          useFactory: async (options: CoreInfrastructureOption) => {
+          useFactory: async (options: CoreDataOption) => {
             return {
               ...options.typeOrmOptions,
               // override options
               entities: [User, Session, Customer, Booking],
             };
           },
-          inject: [CORE_INFRASTRUCTURE_OPTIONS],
+          inject: [CORE_DATA_OPTIONS],
         }),
       ],
     };
@@ -89,7 +89,7 @@ export class CoreInfrastructureModule {
       },
     ];
     return {
-      module: CoreInfrastructureModule,
+      module: CoreDataModule,
       providers: providers,
       exports: providers,
     };

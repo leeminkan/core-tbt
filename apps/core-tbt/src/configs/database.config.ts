@@ -1,6 +1,6 @@
 import { registerAs } from '@nestjs/config';
 import { IsInt, IsString } from 'class-validator';
-import { validateConfig } from '@app/core-shared';
+import { validateConfig } from '@libs/core-shared';
 
 import { DatabaseConfig } from './database-config.type';
 

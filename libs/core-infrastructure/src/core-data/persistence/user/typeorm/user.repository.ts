@@ -1,17 +1,18 @@
 import { DataSource, DeepPartial, EntityManager, Repository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
 
-import { User as UserDomainEntity } from '@app/core-domain';
-import { Nullable } from '@app/core-shared';
+import { Nullable } from '@libs/core-shared';
+import { User as UserDomainEntity } from '@libs/core-domain';
 import {
   RepositoryOptions,
   ThrowNotFoundErrorOptions,
-} from '@app/core-infrastructure/types';
-import { UnitOfWorkManager } from '@app/core-infrastructure/unit-of-work';
+} from '@libs/core-infrastructure/core-data/repository.types';
+import { UnitOfWorkManager } from '@libs/core-infrastructure/unit-of-work';
+import { RecordNotFoundException } from '@libs/core-infrastructure/base.errors';
+
 import { UserRepository as UserRepositoryAbstract } from '../user-repository.abstract';
 import { User as UserSchema } from './user.schema';
 import { UserMapper } from './user.mapper';
-import { RecordNotFoundException } from '@app/core-infrastructure/base.errors';
 
 @Injectable()
 export class UserRepository implements UserRepositoryAbstract {

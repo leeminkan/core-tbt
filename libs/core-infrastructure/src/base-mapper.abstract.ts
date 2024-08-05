@@ -1,5 +1,5 @@
-export abstract class BaseMapper<DomainEntity, OrmSchema> {
-  abstract mapToORM(userEntity: DomainEntity): OrmSchema;
+export abstract class BaseMapper<DomainEntity, InfrastructureSchema> {
+  abstract mapToORM(userEntity: DomainEntity): InfrastructureSchema;
 
-  abstract mapToDomain(userOrm: OrmSchema): DomainEntity;
+  abstract mapToDomain(userOrm: InfrastructureSchema): DomainEntity;
 }

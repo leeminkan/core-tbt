@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
-import { CoreInfrastructureModule } from '@app/core-infrastructure';
+import { CoreDataModule } from '@libs/core-infrastructure';
 
 import { UserCommandService } from './user-command.service';
 
 @Module({
-  imports: [CoreInfrastructureModule.forFeature()],
+  imports: [CoreDataModule.forFeature()],
   providers: [UserCommandService],
   exports: [UserCommandService],
 })

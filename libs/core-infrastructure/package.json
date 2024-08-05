@@ -5,10 +5,10 @@
   "main": "index.js",
   "scripts": {
     "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli",
-    "migration:run": "npm run typeorm migration:run -- -d ./src/data-source.ts",
-    "migration:generate": "npm run typeorm -- -d ./src/data-source.ts migration:generate",
+    "migration:run": "npm run typeorm migration:run -- -d ./src/core-data/typeorm-data-source.ts",
+    "migration:generate": "npm run typeorm -- -d ./src/core-data/typeorm-data-source.ts migration:generate",
     "migration:create": "npm run typeorm -- migration:create",
-    "migration:revert": "npm run typeorm -- -d ./src/data-source.ts migration:revert"
+    "migration:revert": "npm run typeorm -- -d ./src/core-data/typeorm-data-source.ts migration:revert"
   },
   "keywords": [],
   "author": "",
@@ -18,8 +18,5 @@
     "dotenv": "^16.4.5",
     "pg": "^8.12.0",
     "typeorm": "^0.3.20"
-  },
-  "moduleNameMapper": {
-    "^@app/core-domain(|/.*)$": "<rootDir>/../core-domain/src/$1"
   }
 }
