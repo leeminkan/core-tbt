@@ -22,7 +22,7 @@ export class GetListProductDto {
 
   @IsOptional()
   @IsNumber()
-  size?: number;
+  pageSize?: number;
 
   @IsOptional()
   @ValidateNested()

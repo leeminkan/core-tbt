@@ -1,7 +1,7 @@
 export function parsePagination(
   page: number,
-  size: number,
+  pageSize: number,
 ): { take: number; skip: number } {
-  const skip = (page - 1) * size;
-  return { take: size, skip: skip };
+  const skip = (page - 1) * pageSize;
+  return { take: pageSize, skip: skip };
 }

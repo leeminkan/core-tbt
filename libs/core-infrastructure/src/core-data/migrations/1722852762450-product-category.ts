@@ -1,46 +1,27 @@
-import { MigrationInterface, QueryRunner, Table } from 'typeorm';
+import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class ProductCategory1722852762450 implements MigrationInterface {
-  tableName = 'product_categories';
+  name = 'ProductCategory1722852762450';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.createTable(
-      new Table({
-        name: this.tableName,
-        columns: [
-          {
-            name: 'id',
-            type: 'int',
-            isPrimary: true,
-            isGenerated: true,
-            generationStrategy: 'increment',
-          },
-          {
-            name: 'name',
-            type: 'varchar',
-            length: '256',
-          },
-          {
-            name: 'description',
-            type: 'text',
-          },
-          {
-            name: 'created_at',
-            type: 'timestamptz',
-            default: 'now()',
-          },
-          {
-            name: 'updated_at',
-            type: 'timestamptz',
-            default: 'now()',
-          },
-        ],
-      }),
-      true,
+    await queryRunner.query(
+      `CREATE TABLE "product_categories" 
+      ("created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), 
+      "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), 
+      "id" SERIAL NOT NULL, 
+      "name" character varying(64) NOT NULL, 
+      "description" text NOT NULL, 
+      "parent_id" integer, CONSTRAINT "PK_7069dac60d88408eca56fdc9e0c" PRIMARY KEY ("id"))`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "product_categories" ADD CONSTRAINT "FK_5f151d414daab0290f65b517ed4" FOREIGN KEY ("parent_id") REFERENCES "product_categories"("id") ON DELETE CASCADE ON UPDATE NO ACTION`,
     );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable(this.tableName);
+    await queryRunner.query(
+      `ALTER TABLE "product_categories" DROP CONSTRAINT "FK_5f151d414daab0290f65b517ed4"`,
+    );
+    await queryRunner.query(`DROP TABLE "product_categories"`);
   }
 }

@@ -13,7 +13,7 @@ const connectionOptions: DataSourceOptions = {
   password: process.env.POSTGRES_PASSWORD,
   synchronize: false,
   logging: true,
-  entities: [__dirname + 'persistence/**/*.entity{.ts,.js}'],
+  entities: [join(__dirname, 'persistence/**/*.schema{.ts,.js}')],
   migrations: [join(__dirname, 'migrations/**/*{.ts,.js}')],
 };
 

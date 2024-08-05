@@ -3,6 +3,7 @@ import {
   DeepPartial,
   EntityManager,
   ILike,
+  IsNull,
   Repository,
 } from 'typeorm';
 import { Injectable } from '@nestjs/common';
@@ -17,7 +18,10 @@ import {
 import { RecordNotFoundException } from '@libs/core-infrastructure/base.errors';
 import { UnitOfWorkManager } from '@libs/core-infrastructure/unit-of-work';
 
-import { ProductCategoryRepository as ProductCategoryRepositoryAbstract } from '../product-category-repository.abstract';
+import {
+  FindAllAndCountArgs,
+  ProductCategoryRepository as ProductCategoryRepositoryAbstract,
+} from '../product-category-repository.abstract';
 import { ProductCategory as ProductCategorySchema } from './product-category.schema';
 import { ProductCategoryMapper } from './product-category.mapper';
 
@@ -49,31 +53,20 @@ export class ProductCategoryRepository
   }
 
   async create(
-    data: DeepPartial<ProductCategoryDomainEntity>,
+    { parentId, ...data }: DeepPartial<ProductCategoryDomainEntity>,
     options?: RepositoryOptions,
   ) {
     const repository = this.getRepository(options?.unitOfWorkManager);
     const prepareData = repository.create({
       ...data,
+      parent_id: parentId,
     });
     const persistedData = await repository.save(prepareData);
     return this.mapper.mapToDomain(persistedData);
   }
 
   async findAllAndCount(
-    {
-      search,
-      take = 20,
-      skip = 0,
-      sort,
-    }: {
-      search?: string;
-      take?: number;
-      skip?: number;
-      sort?: {
-        createdAt: SortDirection;
-      };
-    },
+    { search, root, parentId, take = 20, skip = 0, sort }: FindAllAndCountArgs,
     options?: RepositoryOptions,
   ) {
     const repository = this.getRepository(options?.unitOfWorkManager);
@@ -82,6 +75,12 @@ export class ProductCategoryRepository
       where: {
         ...(search && {
           name: ILike(`%${search}%`),
+        }),
+        ...(root && {
+          parent_id: IsNull(),
+        }),
+        ...(parentId && {
+          parent_id: parentId,
         }),
       },
       take,
@@ -97,6 +96,36 @@ export class ProductCategoryRepository
       data: data.map((item) => this.mapper.mapToDomain(item)),
       totalCount,
     };
+  }
+
+  async findChildren(
+    parentId,
+    {
+      sort,
+    }: {
+      sort?: { createdAt?: SortDirection; name?: SortDirection };
+    },
+    options?: RepositoryOptions,
+  ): Promise<ProductCategoryDomainEntity[]> {
+    const repository = this.getRepository(options?.unitOfWorkManager);
+
+    const data = await repository.find({
+      where: {
+        parent_id: parentId,
+      },
+      ...((sort?.createdAt || sort?.name) && {
+        order: {
+          ...(sort.createdAt && {
+            created_at: sort.createdAt,
+          }),
+          ...(sort.name && {
+            name: sort.name,
+          }),
+        },
+      }),
+    });
+
+    return data.map((item) => this.mapper.mapToDomain(item));
   }
 
   async findById(

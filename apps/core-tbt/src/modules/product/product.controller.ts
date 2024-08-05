@@ -41,9 +41,9 @@ export class ProductController {
 
   @Get()
   findAllAndCount(
-    @Query() { page = 1, size = 20, ...rest }: GetListProductDto,
+    @Query() { page = 1, pageSize = 20, ...rest }: GetListProductDto,
   ) {
-    const { take, skip } = parsePagination(page, size);
+    const { take, skip } = parsePagination(page, pageSize);
     return this.productQueryService.findAllAndCount({
       take,
       skip,

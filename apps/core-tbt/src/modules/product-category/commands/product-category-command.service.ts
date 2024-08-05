@@ -1,4 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 
 import { ProductCategoryRepository } from '@libs/core-infrastructure';
 import { ProductCategory } from '@libs/core-domain';
@@ -12,6 +16,20 @@ export class ProductCategoryCommandService {
   async create(
     createProductCategoryDto: CreateProductCategoryDto,
   ): Promise<ProductCategory> {
+    if (createProductCategoryDto.parentId) {
+      const parent = await this.productRepository.findById(
+        createProductCategoryDto.parentId,
+      );
+
+      if (!parent) {
+        throw new NotFoundException('Parent category does not exist!');
+      }
+
+      if (parent.parentId) {
+        throw new BadRequestException('Parent should be root category!');
+      }
+    }
+
     const product = await this.productRepository.create({
       ...createProductCategoryDto,
     });

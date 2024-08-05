@@ -8,6 +8,17 @@ import {
   ThrowNotFoundErrorOptions,
 } from '@libs/core-infrastructure/core-data/repository.types';
 
+export type FindAllAndCountArgs = {
+  search?: string;
+  root?: boolean;
+  parentId?: number;
+  take?: number;
+  skip?: number;
+  sort?: {
+    createdAt?: SortDirection;
+  };
+};
+
 export abstract class ProductCategoryRepository {
   abstract create(
     data: DeepPartial<ProductCategoryDomainEntity>,
@@ -15,14 +26,7 @@ export abstract class ProductCategoryRepository {
   ): Promise<ProductCategoryDomainEntity>;
 
   abstract findAllAndCount(
-    args: {
-      search?: string;
-      take?: number;
-      skip?: number;
-      sort?: {
-        createdAt?: SortDirection;
-      };
-    },
+    args: FindAllAndCountArgs,
     options?: RepositoryOptions,
   ): Promise<{
     data: ProductCategoryDomainEntity[];
@@ -37,6 +41,17 @@ export abstract class ProductCategoryRepository {
     id: number,
     options: RepositoryOptions & ThrowNotFoundErrorOptions,
   ): Promise<ProductCategoryDomainEntity>;
+
+  abstract findChildren(
+    parentId: number,
+    args: {
+      sort?: {
+        createdAt?: SortDirection;
+        name?: SortDirection;
+      };
+    },
+    options?: RepositoryOptions,
+  ): Promise<ProductCategoryDomainEntity[]>;
 
   abstract updateById(
     id: number,

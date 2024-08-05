@@ -12,7 +12,12 @@ import {
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 
-import { parsePagination } from '@libs/core-shared';
+import {
+  formatGetListResponse,
+  parsePagination,
+  formatGetDetailResponse,
+} from '@libs/core-shared';
+import { ProductCategory } from '@libs/core-domain';
 
 import { ProductCategoryCommandService } from './commands/product-category-command.service';
 import { ProductCategoryQueryService } from './queries/product-category-query.service';
@@ -24,7 +29,7 @@ import {
 } from './dtos';
 
 @Controller({
-  path: 'product',
+  path: 'product-category',
   version: '1',
 })
 @UseGuards(AuthGuard('jwt'))
@@ -35,33 +40,63 @@ export class ProductCategoryController {
   ) {}
 
   @Post()
-  create(@Body() createProductCategoryDto: CreateProductCategoryDto) {
-    return this.productCommandService.create(createProductCategoryDto);
+  async create(@Body() createProductCategoryDto: CreateProductCategoryDto) {
+    const data = await this.productCommandService.create(
+      createProductCategoryDto,
+    );
+
+    return formatGetDetailResponse<ProductCategory>(data);
   }
 
   @Get()
-  findAllAndCount(
-    @Query() { page = 1, size = 20, ...rest }: GetListProductCategoryDto,
+  async findAllAndCount(
+    @Query() { page = 1, pageSize = 20, ...rest }: GetListProductCategoryDto,
   ) {
-    const { take, skip } = parsePagination(page, size);
-    return this.productQueryService.findAllAndCount({
-      take,
-      skip,
-      ...rest,
-    });
+    const { take, skip } = parsePagination(page, pageSize);
+    const { data, totalCount } = await this.productQueryService.findAllAndCount(
+      {
+        take,
+        skip,
+        ...rest,
+      },
+    );
+
+    return formatGetListResponse<ProductCategory>(
+      data,
+      totalCount,
+      page,
+      pageSize,
+    );
   }
 
   @Get(':id')
-  findOne(@Param('id', ParseIntPipe) id: number) {
-    return this.productQueryService.findOne(id);
+  async findOne(@Param('id', ParseIntPipe) id: number) {
+    const data = await this.productQueryService.findOne(id);
+    return formatGetDetailResponse<ProductCategory>(data);
+  }
+
+  @Get(':id/children')
+  async findChildren(
+    @Param('id', ParseIntPipe) id: number,
+
+    @Query() query: GetListProductCategoryDto,
+  ) {
+    const data = await this.productQueryService.findChildren(id, query);
+
+    return formatGetDetailResponse<ProductCategory[]>(data);
   }
 
   @Patch(':id')
-  update(
+  async update(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateProductCategoryDto: UpdateProductCategoryDto,
   ) {
-    return this.productCommandService.update(id, updateProductCategoryDto);
+    const data = await this.productCommandService.update(
+      id,
+      updateProductCategoryDto,
+    );
+
+    return formatGetDetailResponse<ProductCategory>(data);
   }
 
   @Delete()

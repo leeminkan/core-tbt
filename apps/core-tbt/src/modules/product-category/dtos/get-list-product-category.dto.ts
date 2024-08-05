@@ -5,6 +5,7 @@ import {
   IsString,
   ValidateNested,
   IsEnum,
+  IsBoolean,
 } from 'class-validator';
 
 import { SortDirection, sortDirection } from '@libs/core-shared/constants';
@@ -13,16 +14,32 @@ export class SortDto {
   @IsOptional()
   @IsEnum(sortDirection)
   createdAt?: SortDirection;
+
+  @IsOptional()
+  @IsEnum(sortDirection)
+  name?: SortDirection;
 }
 
 export class GetListProductCategoryDto {
+  @IsOptional()
+  @IsString()
+  search?: string;
+
+  @IsOptional()
+  @IsBoolean()
+  root?: boolean;
+
+  @IsOptional()
+  @IsNumber()
+  parentId?: number;
+
   @IsOptional()
   @IsNumber()
   page?: number;
 
   @IsOptional()
   @IsNumber()
-  size?: number;
+  pageSize?: number;
 
   @IsOptional()
   @ValidateNested()
@@ -37,8 +54,4 @@ export class GetListProductCategoryDto {
     return plainToClass(SortDto, sortObj);
   })
   sort?: SortDto;
-
-  @IsOptional()
-  @IsString()
-  search?: string;
 }

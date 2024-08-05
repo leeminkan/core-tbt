@@ -18,6 +18,7 @@ export class ProductCategoryMapper
     orm.id = domainEntity.id;
     orm.name = domainEntity.name;
     orm.description = domainEntity.description;
+    orm.parent_id = domainEntity.parentId;
     return orm;
   }
 
@@ -28,6 +29,7 @@ export class ProductCategoryMapper
       id: infrastructureSchema.id,
       name: infrastructureSchema.name,
       description: infrastructureSchema.description,
+      parentId: infrastructureSchema.parent_id,
     });
   }
 }
