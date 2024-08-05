@@ -16,6 +16,7 @@ import { UserModule } from './modules/user';
 import { AuthModule } from './modules/auth';
 import { CustomerModule } from './modules/customer';
 import { BookingModule } from './modules/booking';
+import { ProductModule } from './modules/product';
 
 @Module({
   imports: [
@@ -44,6 +45,7 @@ import { BookingModule } from './modules/booking';
     AuthModule,
     CustomerModule,
     BookingModule,
+    ProductModule,
   ],
   controllers: [AppController],
   providers: [AppService],

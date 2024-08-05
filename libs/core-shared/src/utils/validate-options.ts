@@ -1,9 +1,9 @@
 import {
   HttpStatus,
-  UnprocessableEntityException,
   ValidationError,
   ValidationPipeOptions,
 } from '@nestjs/common';
+import { ValidationFailedError } from '@app/core-tbt/exceptions';
 
 function generateErrors(errors: ValidationError[]) {
   return errors.reduce(
@@ -20,13 +20,14 @@ function generateErrors(errors: ValidationError[]) {
 
 export const validationOptions: ValidationPipeOptions = {
   transform: true,
+  transformOptions: {
+    enableImplicitConversion: true,
+  },
   whitelist: true,
   forbidNonWhitelisted: true,
+  // forbidUnknownValues: true,
   errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY,
   exceptionFactory: (errors: ValidationError[]) => {
-    return new UnprocessableEntityException({
-      status: HttpStatus.UNPROCESSABLE_ENTITY,
-      errors: generateErrors(errors),
-    });
+    return new ValidationFailedError(generateErrors(errors));
   },
 };

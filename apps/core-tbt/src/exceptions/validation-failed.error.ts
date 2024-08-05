@@ -7,7 +7,6 @@ export class ValidationFailedError extends HttpException {
       'Some entities failed, please check',
       HttpStatus.UNPROCESSABLE_ENTITY,
     );
-
     this.errors = errors;
   }
 

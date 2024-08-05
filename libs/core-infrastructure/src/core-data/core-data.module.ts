@@ -6,6 +6,7 @@ import {
   SessionRepository,
   CustomerRepository,
   BookingRepository,
+  ProductRepository,
 } from './persistence';
 import {
   User,
@@ -23,6 +24,10 @@ import {
   Booking,
   BookingRepository as TypeOrmBookingRepository,
 } from './persistence/booking/typeorm';
+import {
+  Product,
+  ProductRepository as TypeOrmProductRepository,
+} from './persistence/product/typeorm';
 
 import {
   CoreDataOption,
@@ -32,7 +37,7 @@ import {
 
 @Module({})
 export class CoreDataModule {
-  static defaultTypeormEntites = [User, Session, Customer, Booking];
+  static defaultTypeormEntites = [User, Session, Customer, Booking, Product];
 
   static forRoot(options: CoreDataOption): DynamicModule {
     return {
@@ -89,6 +94,10 @@ export class CoreDataModule {
       {
         provide: BookingRepository,
         useClass: TypeOrmBookingRepository,
+      },
+      {
+        provide: ProductRepository,
+        useClass: TypeOrmProductRepository,
       },
     ];
     return {

@@ -3,5 +3,5 @@
 - Migrations
 
 ```
-pnpm migration:create ./src/primary-db/migrations/user
+pnpm migration:create ./src/core-data/migrations/user
 ```
