@@ -12,15 +12,21 @@ import {
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 
-import { parsePagination } from '@libs/core-shared';
+import {
+  formatGetDetailResponse,
+  formatGetListResponse,
+  parsePagination,
+} from '@libs/core-shared';
 
 import { ProductCommandService } from './commands/product-command.service';
 import { ProductQueryService } from './queries/product-query.service';
+import { ProductPopulateService } from './product-populate.service';
 import {
   CreateProductDto,
   UpdateProductDto,
   GetListProductDto,
   BulkDeleteProductDto,
+  ProductResponse,
 } from './dtos';
 
 @Controller({
@@ -32,36 +38,66 @@ export class ProductController {
   constructor(
     private readonly productCommandService: ProductCommandService,
     private readonly productQueryService: ProductQueryService,
+    private readonly productPopulateService: ProductPopulateService,
   ) {}
 
   @Post()
-  create(@Body() createProductDto: CreateProductDto) {
-    return this.productCommandService.create(createProductDto);
+  async create(@Body() createProductDto: CreateProductDto) {
+    const product = await this.productCommandService.create(createProductDto);
+
+    const populatedProduct =
+      await this.productPopulateService.populateProductDetail(product);
+
+    return formatGetDetailResponse<ProductResponse>(populatedProduct);
   }
 
   @Get()
-  findAllAndCount(
+  async findAllAndCount(
     @Query() { page = 1, pageSize = 20, ...rest }: GetListProductDto,
   ) {
     const { take, skip } = parsePagination(page, pageSize);
-    return this.productQueryService.findAllAndCount({
-      take,
-      skip,
-      ...rest,
-    });
+    const { data, totalCount } = await this.productQueryService.findAllAndCount(
+      {
+        take,
+        skip,
+        ...rest,
+      },
+    );
+    const populatedProductList =
+      await this.productPopulateService.populateProductList(data);
+
+    return formatGetListResponse<ProductResponse>(
+      populatedProductList,
+      totalCount,
+      page,
+      pageSize,
+    );
   }
 
   @Get(':id')
-  findOne(@Param('id', ParseIntPipe) id: number) {
-    return this.productQueryService.findOne(id);
+  async findOne(@Param('id', ParseIntPipe) id: number) {
+    const product = await this.productQueryService.findOne(id);
+
+    const populatedProduct =
+      await this.productPopulateService.populateProductDetail(product);
+
+    return formatGetDetailResponse<ProductResponse>(populatedProduct);
   }
 
   @Patch(':id')
-  update(
+  async update(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateProductDto: UpdateProductDto,
   ) {
-    return this.productCommandService.update(id, updateProductDto);
+    const product = await this.productCommandService.update(
+      id,
+      updateProductDto,
+    );
+
+    const populatedProduct =
+      await this.productPopulateService.populateProductDetail(product);
+
+    return formatGetDetailResponse<ProductResponse>(populatedProduct);
   }
 
   @Delete()

@@ -27,6 +27,7 @@ import {
 } from './persistence/booking/typeorm';
 import {
   Product,
+  ProductCategoryAssociation,
   ProductRepository as TypeOrmProductRepository,
 } from './persistence/product/typeorm';
 import {
@@ -49,6 +50,7 @@ export class CoreDataModule {
     Booking,
     Product,
     ProductCategory,
+    ProductCategoryAssociation,
   ];
 
   static forRoot(options: CoreDataOption): DynamicModule {

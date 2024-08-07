@@ -19,6 +19,9 @@ export class ProductMapper
 
   mapToDomain(
     infrastructureSchema: ProductInfrastructureSchema,
+    additionalFields?: {
+      categoryIds: number[];
+    },
   ): ProductDomainEntity {
     return plainToInstance(ProductDomainEntity, {
       id: infrastructureSchema.id,
@@ -26,6 +29,7 @@ export class ProductMapper
       description: infrastructureSchema.description,
       image: infrastructureSchema.image,
       price: infrastructureSchema.price,
+      categoryIds: additionalFields?.categoryIds ?? [],
     });
   }
 }

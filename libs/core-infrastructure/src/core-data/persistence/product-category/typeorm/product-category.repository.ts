@@ -4,6 +4,7 @@ import {
   EntityManager,
   ILike,
   IsNull,
+  In,
   Repository,
 } from 'typeorm';
 import { Injectable } from '@nestjs/common';
@@ -63,6 +64,39 @@ export class ProductCategoryRepository
     });
     const persistedData = await repository.save(prepareData);
     return this.mapper.mapToDomain(persistedData);
+  }
+
+  async findAll(
+    { ids, search, root, parentId, take, skip, sort }: FindAllAndCountArgs,
+    options?: RepositoryOptions,
+  ) {
+    const repository = this.getRepository(options?.unitOfWorkManager);
+
+    const data = await repository.find({
+      where: {
+        ...(ids?.length && {
+          id: In(ids),
+        }),
+        ...(search && {
+          name: ILike(`%${search}%`),
+        }),
+        ...(root && {
+          parent_id: IsNull(),
+        }),
+        ...(parentId && {
+          parent_id: parentId,
+        }),
+      },
+      take,
+      skip,
+      ...(sort?.createdAt && {
+        order: {
+          created_at: sort.createdAt,
+        },
+      }),
+    });
+
+    return data.map((item) => this.mapper.mapToDomain(item));
   }
 
   async findAllAndCount(

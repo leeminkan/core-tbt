@@ -1,6 +1,8 @@
 import {
+  IsArray,
   IsNotEmpty,
   IsNumber,
+  IsOptional,
   IsString,
   MaxLength,
   MinLength,
@@ -28,4 +30,9 @@ export class UpdateProductDto {
   @IsNotEmpty()
   @IsNumber()
   price: number;
+
+  @IsOptional()
+  @IsArray()
+  @IsNumber({}, { each: true })
+  categoryIds: number[];
 }

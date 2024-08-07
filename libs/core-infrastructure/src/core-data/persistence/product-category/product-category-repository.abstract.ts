@@ -9,6 +9,7 @@ import {
 } from '@libs/core-infrastructure/core-data/repository.types';
 
 export type FindAllAndCountArgs = {
+  ids?: number[];
   search?: string;
   root?: boolean;
   parentId?: number;
@@ -24,6 +25,11 @@ export abstract class ProductCategoryRepository {
     data: DeepPartial<ProductCategoryDomainEntity>,
     options?: RepositoryOptions,
   ): Promise<ProductCategoryDomainEntity>;
+
+  abstract findAll(
+    args: FindAllAndCountArgs,
+    options?: RepositoryOptions,
+  ): Promise<ProductCategoryDomainEntity[]>;
 
   abstract findAllAndCount(
     args: FindAllAndCountArgs,

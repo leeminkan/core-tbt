@@ -4,11 +4,13 @@ import {
   DeepPartial,
   EntityManager,
   ILike,
+  In,
   LessThanOrEqual,
   MoreThanOrEqual,
   Repository,
 } from 'typeorm';
 import { Injectable } from '@nestjs/common';
+import { difference } from 'lodash';
 
 import { Nullable, ShallowNever } from '@libs/core-shared';
 import { SortDirection } from '@libs/core-shared/constants';
@@ -23,17 +25,25 @@ import { UnitOfWorkManager } from '@libs/core-infrastructure/unit-of-work';
 import { ProductRepository as ProductRepositoryAbstract } from '../product-repository.abstract';
 import { Product as ProductSchema } from './product.schema';
 import { ProductMapper } from './product.mapper';
+import { ProductCategoryAssociation } from './product-category-association.schema';
 
 @Injectable()
 export class ProductRepository implements ProductRepositoryAbstract {
   private repository: Repository<ProductSchema>;
   private mapper: ProductMapper;
+  private productCategoryAssociationRepository: Repository<ProductCategoryAssociation>;
 
   constructor(private dataSource: DataSource) {
+    const entityManager = dataSource.createEntityManager();
     this.repository = new Repository<ProductSchema>(
       ProductSchema,
-      dataSource.createEntityManager(),
+      entityManager,
     );
+    this.productCategoryAssociationRepository =
+      new Repository<ProductCategoryAssociation>(
+        ProductCategoryAssociation,
+        entityManager,
+      );
     this.mapper = new ProductMapper();
   }
 
@@ -56,7 +66,26 @@ export class ProductRepository implements ProductRepositoryAbstract {
       ...data,
     });
     const persistedData = await repository.save(prepareData);
-    return this.mapper.mapToDomain(persistedData);
+
+    if (data.categoryIds && data.categoryIds.length) {
+      await this.productCategoryAssociationRepository
+        .createQueryBuilder()
+        .insert()
+        .orIgnore(true)
+        .into(ProductCategoryAssociation)
+        .values(
+          data.categoryIds.map((item) => ({
+            product_id: persistedData.id,
+            category_id: item,
+          })),
+        )
+        .updateEntity(false)
+        .execute();
+    }
+
+    return this.mapper.mapToDomain(persistedData, {
+      categoryIds: data.categoryIds ?? [],
+    });
   }
 
   async findAllAndCount(
@@ -106,8 +135,22 @@ export class ProductRepository implements ProductRepositoryAbstract {
       }),
     });
 
+    const categories = await this.productCategoryAssociationRepository.find({
+      where: {
+        product_id: In(data.map((item) => item.id)),
+      },
+    });
+
     return {
-      data: data.map((item) => this.mapper.mapToDomain(item)),
+      data: data.map((product) => {
+        const categoryIds = categories
+          .filter((item) => item.product_id === product.id)
+          .map((item) => item.category_id);
+
+        return this.mapper.mapToDomain(product, {
+          categoryIds,
+        });
+      }),
       totalCount,
     };
   }
@@ -139,15 +182,58 @@ export class ProductRepository implements ProductRepositoryAbstract {
       return null;
     }
 
-    return this.mapper.mapToDomain(row);
+    const categories = await this.productCategoryAssociationRepository.find({
+      where: {
+        product_id: row.id,
+      },
+    });
+
+    return this.mapper.mapToDomain(row, {
+      categoryIds: categories.map((item) => item.category_id),
+    });
   }
 
   async updateById(
     id: number,
-    data: DeepPartial<ProductDomainEntity>,
+    { categoryIds = [], ...data }: DeepPartial<ProductDomainEntity>,
     options?: RepositoryOptions,
   ) {
     const repository = this.getRepository(options?.unitOfWorkManager);
+
+    const currentCategories =
+      await this.productCategoryAssociationRepository.find({
+        where: {
+          product_id: id,
+        },
+      });
+    const currentCategoryIds = currentCategories.map(
+      (item) => item.category_id,
+    );
+
+    const idsToRemove = difference(currentCategoryIds, categoryIds);
+    const idsToAdd = difference(categoryIds, currentCategoryIds);
+    if (idsToRemove.length) {
+      await this.productCategoryAssociationRepository.delete({
+        product_id: id,
+        category_id: In(idsToRemove),
+      });
+    }
+    if (idsToAdd.length) {
+      await this.productCategoryAssociationRepository
+        .createQueryBuilder()
+        .insert()
+        .orIgnore(true)
+        .into(ProductCategoryAssociation)
+        .values(
+          idsToAdd.map((item) => ({
+            product_id: id,
+            category_id: item,
+          })),
+        )
+        .updateEntity(false)
+        .execute();
+    }
+
     return await repository.update(id, { ...data });
   }
 

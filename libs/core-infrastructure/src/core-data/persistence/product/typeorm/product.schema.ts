@@ -1,6 +1,8 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 import { TypeormBaseSchema } from '@libs/core-infrastructure/core-data/typeorm-base.schema';
+
+import { ProductCategoryAssociation } from './product-category-association.schema';
 
 @Entity({
   name: 'products',
@@ -27,4 +29,7 @@ export class Product extends TypeormBaseSchema {
     scale: 2,
   })
   price: number;
+
+  @OneToMany(() => ProductCategoryAssociation, (postTag) => postTag.product)
+  productCategoryAssociations: ProductCategoryAssociation[];
 }

@@ -8,6 +8,7 @@ import {
 } from 'typeorm';
 
 import { TypeormBaseSchema } from '@libs/core-infrastructure/core-data/typeorm-base.schema';
+import { ProductCategoryAssociation } from '../../product/typeorm';
 
 @Entity({
   name: 'product_categories',
@@ -34,4 +35,7 @@ export class ProductCategory extends TypeormBaseSchema {
 
   @OneToMany(() => ProductCategory, (category) => category.parent)
   children: ProductCategory[];
+
+  @OneToMany(() => ProductCategoryAssociation, (postTag) => postTag.categories)
+  productCategoryAssociations: ProductCategoryAssociation[];
 }
