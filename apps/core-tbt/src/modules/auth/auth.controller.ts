@@ -11,6 +11,7 @@ import { AuthGuard } from '@nestjs/passport';
 
 import { SignInDto } from './dtos/sign-in.dto';
 import { AuthCommandService } from './commands/auth-command.service';
+import { UserRequest } from './user-request.types';
 
 @Controller({
   path: 'auth',
@@ -31,7 +32,7 @@ export class AuthController {
   @Post('refresh')
   @UseGuards(AuthGuard('jwt-refresh'))
   @HttpCode(HttpStatus.OK)
-  async refresh(@Request() request) {
+  async refresh(@Request() request: UserRequest) {
     return await this.authCommandService.refreshToken({
       sessionId: request.user.sessionId,
       hash: request.user.hash,

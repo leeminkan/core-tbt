@@ -61,14 +61,14 @@ export abstract class ProductCategoryRepository {
     id: number,
     data: DeepPartial<ProductCategoryDomainEntity>,
     options?: RepositoryOptions,
-  );
+  ): void;
 
   abstract findAndUpdateById(
     id: number,
     data: DeepPartial<ProductCategoryDomainEntity>,
     options?: RepositoryOptions,
-  );
+  ): void;
 
-  abstract deleteById(id: number, options?: RepositoryOptions);
-  abstract deleteByIds(ids: number[], options?: RepositoryOptions);
+  abstract deleteById(id: number, options?: RepositoryOptions): void;
+  abstract deleteByIds(ids: number[], options?: RepositoryOptions): void;
 }

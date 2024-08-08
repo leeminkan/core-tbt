@@ -134,7 +134,7 @@ export class ProductCategoryRepository
   }
 
   async findChildren(
-    parentId,
+    parentId: number,
     {
       sort,
     }: {

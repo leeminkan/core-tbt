@@ -28,18 +28,18 @@ export abstract class BookingRepository {
     id: number,
     data: DeepPartial<BookingDomainEntity>,
     options?: RepositoryOptions,
-  );
+  ): void;
   abstract updateByIdVersion(
     where: { id: number; version: number },
     data: DeepPartial<BookingDomainEntity>,
     options?: RepositoryOptions,
-  );
+  ): void;
 
   abstract findAndUpdateById(
     id: number,
     data: DeepPartial<BookingDomainEntity>,
     options?: RepositoryOptions,
-  );
+  ): void;
 
-  abstract deleteById(id: number, options?: RepositoryOptions);
+  abstract deleteById(id: number, options?: RepositoryOptions): void;
 }

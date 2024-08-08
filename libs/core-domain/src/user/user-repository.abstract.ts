@@ -41,13 +41,13 @@ export abstract class UserRepository {
     id: number,
     data: DeepPartial<UserDomainEntity>,
     options?: RepositoryOptions,
-  );
+  ): void;
 
   abstract findAndUpdateUserById(
     id: number,
     data: DeepPartial<UserDomainEntity>,
     options?: RepositoryOptions,
-  );
+  ): void;
 
-  abstract deleteUserById(id: number, options?: RepositoryOptions);
+  abstract deleteUserById(id: number, options?: RepositoryOptions): void;
 }

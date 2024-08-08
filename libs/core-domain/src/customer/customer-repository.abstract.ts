@@ -35,13 +35,13 @@ export abstract class CustomerRepository {
     id: number,
     data: DeepPartial<CustomerDomainEntity>,
     options?: RepositoryOptions,
-  );
+  ): void;
 
   abstract findAndUpdateById(
     id: number,
     data: DeepPartial<CustomerDomainEntity>,
     options?: RepositoryOptions,
-  );
+  ): void;
 
-  abstract deleteById(id: number, options?: RepositoryOptions);
+  abstract deleteById(id: number, options?: RepositoryOptions): void;
 }

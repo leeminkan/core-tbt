@@ -29,10 +29,10 @@ export class GetListProductDto {
   @Type(() => SortDto)
   @Transform(({ value }) => {
     const sortFields = value.split(',');
-    const sortObj: SortDto = {};
+    const sortObj: Record<string, string> = {};
     sortFields.forEach((field: string) => {
       const [column, order] = field.split(':');
-      sortObj[column] = order as SortDirection;
+      sortObj[column] = order;
     });
     return plainToClass(SortDto, sortObj);
   })

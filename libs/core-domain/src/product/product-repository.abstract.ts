@@ -42,14 +42,14 @@ export abstract class ProductRepository {
     id: number,
     data: DeepPartial<ProductDomainEntity>,
     options?: RepositoryOptions,
-  );
+  ): void;
 
   abstract findAndUpdateById(
     id: number,
     data: DeepPartial<ProductDomainEntity>,
     options?: RepositoryOptions,
-  );
+  ): void;
 
-  abstract deleteById(id: number, options?: RepositoryOptions);
-  abstract deleteByIds(ids: number[], options?: RepositoryOptions);
+  abstract deleteById(id: number, options?: RepositoryOptions): void;
+  abstract deleteByIds(ids: number[], options?: RepositoryOptions): void;
 }

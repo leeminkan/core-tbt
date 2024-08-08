@@ -5,8 +5,12 @@ import {
 } from '@nestjs/common';
 import { ValidationFailedError } from '@app/core-tbt/exceptions';
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 function generateErrors(errors: ValidationError[]) {
   return errors.reduce(
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     (accumulator, currentValue) => ({
       ...accumulator,
       [currentValue.property]:

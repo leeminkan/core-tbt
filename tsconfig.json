@@ -12,12 +12,15 @@
     "baseUrl": "./",
     "incremental": true,
     "skipLibCheck": true,
-    "strictNullChecks": true,
-    "noImplicitAny": false,
-    "strictBindCallApply": false,
-    "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false,
+    "strict": true,
+    // "strictNullChecks": true,
+    // "noImplicitAny": false,
+    // "strictBindCallApply": false,
+    "strictPropertyInitialization": false,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
     "esModuleInterop": true,
+    "resolveJsonModule": true, 
     "paths": {
       "@app/core-tbt": [
         "apps/core-tbt/src"
