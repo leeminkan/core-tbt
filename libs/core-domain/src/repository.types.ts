@@ -1,4 +1,4 @@
-import { UnitOfWorkManager } from '../unit-of-work';
+import { UnitOfWorkManager } from '../../core-infrastructure/src/unit-of-work';
 
 export type RepositoryOptions = {
   unitOfWorkManager?: UnitOfWorkManager;

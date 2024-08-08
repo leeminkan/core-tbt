@@ -14,15 +14,17 @@ import { difference } from 'lodash';
 
 import { Nullable, ShallowNever } from '@libs/core-shared';
 import { SortDirection } from '@libs/core-shared/constants';
-import { Product as ProductDomainEntity } from '@libs/core-domain';
+import {
+  Product as ProductDomainEntity,
+  ProductRepository as ProductRepositoryAbstract,
+} from '@libs/core-domain';
 import {
   RepositoryOptions,
   ThrowNotFoundErrorOptions,
-} from '@libs/core-infrastructure/core-data/repository.types';
+} from '@libs/core-domain/repository.types';
 import { RecordNotFoundException } from '@libs/core-infrastructure/base.errors';
 import { UnitOfWorkManager } from '@libs/core-infrastructure/unit-of-work';
 
-import { ProductRepository as ProductRepositoryAbstract } from '../product-repository.abstract';
 import { Product as ProductSchema } from './product.schema';
 import { ProductMapper } from './product.mapper';
 import { ProductCategoryAssociation } from './product-category-association.schema';

@@ -2,15 +2,17 @@ import { DataSource, DeepPartial, EntityManager, Repository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
 
 import { Nullable, ShallowNever } from '@libs/core-shared';
-import { Customer as CustomerDomainEntity } from '@libs/core-domain';
+import {
+  Customer as CustomerDomainEntity,
+  CustomerRepository as CustomerRepositoryAbstract,
+} from '@libs/core-domain';
 import {
   RepositoryOptions,
   ThrowNotFoundErrorOptions,
-} from '@libs/core-infrastructure/core-data/repository.types';
+} from '@libs/core-domain/repository.types';
 import { RecordNotFoundException } from '@libs/core-infrastructure/base.errors';
 import { UnitOfWorkManager } from '@libs/core-infrastructure/unit-of-work';
 
-import { CustomerRepository as CustomerRepositoryAbstract } from '../customer-repository.abstract';
 import { Customer as CustomerSchema } from './customer.schema';
 import { CustomerMapper } from './customer.mapper';
 

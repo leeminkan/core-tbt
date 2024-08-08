@@ -1,1 +1,1 @@
-export * from './session-repository.abstract';
+export * from '../../../../../core-domain/src/session/session-repository.abstract';

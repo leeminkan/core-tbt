@@ -1,8 +1,6 @@
-import { DeepPartial } from 'typeorm';
-
-import { Nullable } from '@libs/core-shared';
+import { DeepPartial, Nullable } from '@libs/core-shared';
 import { Booking as BookingDomainEntity } from '@libs/core-domain';
-import { RepositoryOptions } from '@libs/core-infrastructure/core-data/repository.types';
+import { RepositoryOptions } from '@libs/core-domain/repository.types';
 
 export abstract class BookingRepository {
   abstract create(

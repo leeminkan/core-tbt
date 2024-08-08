@@ -11,18 +11,19 @@ import { Injectable } from '@nestjs/common';
 
 import { Nullable, ShallowNever } from '@libs/core-shared';
 import { SortDirection } from '@libs/core-shared/constants';
-import { ProductCategory as ProductCategoryDomainEntity } from '@libs/core-domain';
+import {
+  ProductCategory as ProductCategoryDomainEntity,
+  FindAllAndCountArgs,
+  ProductCategoryRepository as ProductCategoryRepositoryAbstract,
+} from '@libs/core-domain';
+
 import {
   RepositoryOptions,
   ThrowNotFoundErrorOptions,
-} from '@libs/core-infrastructure/core-data/repository.types';
+} from '@libs/core-domain/repository.types';
 import { RecordNotFoundException } from '@libs/core-infrastructure/base.errors';
 import { UnitOfWorkManager } from '@libs/core-infrastructure/unit-of-work';
 
-import {
-  FindAllAndCountArgs,
-  ProductCategoryRepository as ProductCategoryRepositoryAbstract,
-} from '../product-category-repository.abstract';
 import { ProductCategory as ProductCategorySchema } from './product-category.schema';
 import { ProductCategoryMapper } from './product-category.mapper';
 

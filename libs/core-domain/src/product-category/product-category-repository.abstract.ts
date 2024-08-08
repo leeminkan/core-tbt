@@ -1,12 +1,10 @@
-import { DeepPartial } from 'typeorm';
-
-import { Nullable, ShallowNever } from '@libs/core-shared';
+import { DeepPartial, Nullable, ShallowNever } from '@libs/core-shared';
 import { SortDirection } from '@libs/core-shared/constants';
 import { ProductCategory as ProductCategoryDomainEntity } from '@libs/core-domain';
 import {
   RepositoryOptions,
   ThrowNotFoundErrorOptions,
-} from '@libs/core-infrastructure/core-data/repository.types';
+} from '@libs/core-domain/repository.types';
 
 export type FindAllAndCountArgs = {
   ids?: number[];

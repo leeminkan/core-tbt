@@ -1,21 +1,31 @@
 import { DataSource, DeepPartial, EntityManager, Repository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
 
-import { Session as SessionDomainEntity } from '@libs/core-domain';
-import { RepositoryOptions } from '@libs/core-infrastructure/core-data/repository.types';
+import {
+  Session as SessionDomainEntity,
+  SessionRepository as SessionRepositoryAbstract,
+} from '@libs/core-domain';
+import { RepositoryOptions } from '@libs/core-domain/repository.types';
 import { UnitOfWorkManager } from '@libs/core-infrastructure/unit-of-work';
 
 import { Session as SessionSchema } from './session.schema';
 import { SessionMapper } from './session.mapper';
 
 @Injectable()
-export class SessionRepository extends Repository<SessionSchema> {
-  constructor(private readonly dataSource: DataSource) {
-    super(SessionSchema, dataSource.createEntityManager());
+export class SessionRepository implements SessionRepositoryAbstract {
+  private repository: Repository<SessionSchema>;
+  private mapper: SessionMapper;
+
+  constructor(private dataSource: DataSource) {
+    this.repository = new Repository<SessionSchema>(
+      SessionSchema,
+      dataSource.createEntityManager(),
+    );
+    this.mapper = new SessionMapper();
   }
 
   getRepository(manager?: UnitOfWorkManager) {
-    if (!manager) return this;
+    if (!manager) return this.repository;
 
     if (!(manager instanceof EntityManager)) {
       throw new Error('Manager is not supported');

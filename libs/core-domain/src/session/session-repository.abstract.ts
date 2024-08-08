@@ -1,7 +1,6 @@
-import { DeepPartial } from 'typeorm';
-
+import { DeepPartial } from '@libs/core-shared';
 import { Session as SessionDomainEntity } from '@libs/core-domain';
-import { RepositoryOptions } from '@libs/core-infrastructure/core-data/repository.types';
+import { RepositoryOptions } from '@libs/core-domain/repository.types';
 
 export abstract class SessionRepository {
   abstract createSession(

@@ -1,1 +1,1 @@
-export * from './user-repository.abstract';
+export * from '../../../../../core-domain/src/user/user-repository.abstract';

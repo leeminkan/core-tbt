@@ -1,15 +1,17 @@
 import { DataSource, DeepPartial, EntityManager, Repository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
 
-import { Booking as BookingDomainEntity } from '@libs/core-domain';
-import { RepositoryOptions } from '@libs/core-infrastructure/core-data/repository.types';
+import {
+  Booking as BookingDomainEntity,
+  BookingRepository as BookingRepositoryAbstract,
+} from '@libs/core-domain';
+import { RepositoryOptions } from '@libs/core-domain/repository.types';
 import { UnitOfWorkManager } from '@libs/core-infrastructure/unit-of-work';
 import {
   RecordNotFoundException,
   VersionMismatchError,
 } from '@libs/core-infrastructure/base.errors';
 
-import { BookingRepository as BookingRepositoryAbstract } from '../booking-repository.abstract';
 import { Booking as BookingSchema } from './booking.schema';
 import { BookingMapper } from './booking.mapper';
 
