@@ -1,9 +1,9 @@
-import { NestFactory } from '@nestjs/core';
 import { ConfigService } from '@nestjs/config';
+import { NestFactory } from '@nestjs/core';
 
 import { ChatTbtModule } from './chat-tbt.module';
-import { RedisIoAdapter } from './redis-io.adapter';
 import { AllConfigType } from './configs';
+import { RedisIoAdapter } from './redis-io.adapter';
 
 async function bootstrap() {
   const app = await NestFactory.create(ChatTbtModule);

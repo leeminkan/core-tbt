@@ -1,5 +1,6 @@
-import { Catch, ArgumentsHost, ExceptionFilter } from '@nestjs/common';
+import { ArgumentsHost, Catch, ExceptionFilter } from '@nestjs/common';
 import { Request, Response } from 'express';
+
 import { BaseInfrastructureError } from '@libs/core-infrastructure/base.errors';
 
 @Catch(BaseInfrastructureError)

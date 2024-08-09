@@ -3,5 +3,10 @@
   "trailingComma": "all",
   "printWidth": 80,
   "tabWidth": 2,
-  "semi": true
+  "semi": true,
+  "plugins": ["@trivago/prettier-plugin-sort-imports"],
+  "importOrder": ["^@apps/(.*)$", "^@libs/(.*)$", "^[./]"],
+  "importOrderParserPlugins": ["typescript", "decorators-legacy"],
+  "importOrderSeparation": true,
+  "importOrderSortSpecifiers": true
 }

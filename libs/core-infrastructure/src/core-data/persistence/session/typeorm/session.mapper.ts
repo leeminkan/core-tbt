@@ -1,4 +1,5 @@
 import { plainToInstance } from 'class-transformer';
+
 import { Session as SessionDomainEntity } from '@libs/core-domain';
 
 import { Session as SessionInfrastructureSchema } from './session.schema';

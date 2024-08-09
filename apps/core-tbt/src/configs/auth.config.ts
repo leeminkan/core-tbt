@@ -1,5 +1,6 @@
 import { registerAs } from '@nestjs/config';
 import { IsString } from 'class-validator';
+
 import { validateConfig } from '@libs/core-shared';
 
 import { AuthConfig } from './auth-config.type';

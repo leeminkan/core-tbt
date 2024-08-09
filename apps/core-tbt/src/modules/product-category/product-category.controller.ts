@@ -1,32 +1,32 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
+  Controller,
   Delete,
+  Get,
+  Param,
   ParseIntPipe,
-  UseGuards,
+  Patch,
+  Post,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 
+import { ProductCategory } from '@libs/core-domain';
 import {
+  formatGetDetailResponse,
   formatGetListResponse,
   parsePagination,
-  formatGetDetailResponse,
 } from '@libs/core-shared';
-import { ProductCategory } from '@libs/core-domain';
 
 import { ProductCategoryCommandService } from './commands/product-category-command.service';
-import { ProductCategoryQueryService } from './queries/product-category-query.service';
 import {
-  CreateProductCategoryDto,
-  UpdateProductCategoryDto,
-  GetListProductCategoryDto,
   BulkDeleteProductCategoryDto,
+  CreateProductCategoryDto,
+  GetListProductCategoryDto,
+  UpdateProductCategoryDto,
 } from './dtos';
+import { ProductCategoryQueryService } from './queries/product-category-query.service';
 
 @Controller({
   path: 'product-category',

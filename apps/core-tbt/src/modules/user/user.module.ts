@@ -1,7 +1,8 @@
+import { SessionCommandModule } from '@app/core-tbt/modules/session';
 import { Module } from '@nestjs/common';
+
 import { CoreDataModule } from '@libs/core-infrastructure';
 
-import { SessionCommandModule } from '@app/core-tbt/modules/session';
 import { UserCommandModule } from './commands/user-command.module';
 import { UserQueryModule } from './queries/user-query.module';
 import { UserController } from './user.controller';

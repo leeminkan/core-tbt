@@ -1,3 +1,4 @@
+import { TokenService } from '@app/core-tbt/modules/jwt';
 import {
   CanActivate,
   ExecutionContext,
@@ -5,8 +6,6 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { Request } from 'express';
-
-import { TokenService } from '@app/core-tbt/modules/jwt';
 
 @Injectable()
 export class AuthGuard implements CanActivate {

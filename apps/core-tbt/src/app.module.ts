@@ -1,23 +1,22 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+
 import { CoreDataModule } from '@libs/core-infrastructure';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-
 import {
-  appConfig,
-  databaseConfig,
-  authConfig,
   AllConfigType,
+  appConfig,
+  authConfig,
+  databaseConfig,
 } from './configs';
-
-import { UserModule } from './modules/user';
 import { AuthModule } from './modules/auth';
-import { CustomerModule } from './modules/customer';
 import { BookingModule } from './modules/booking';
+import { CustomerModule } from './modules/customer';
 import { ProductModule } from './modules/product';
 import { ProductCategoryModule } from './modules/product-category';
+import { UserModule } from './modules/user';
 
 @Module({
   imports: [

@@ -1,16 +1,16 @@
 import {
   Body,
   Controller,
-  Post,
   HttpCode,
   HttpStatus,
-  UseGuards,
+  Post,
   Request,
+  UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 
-import { SignInDto } from './dtos/sign-in.dto';
 import { AuthCommandService } from './commands/auth-command.service';
+import { SignInDto } from './dtos/sign-in.dto';
 import { UserRequest } from './user-request.types';
 
 @Controller({

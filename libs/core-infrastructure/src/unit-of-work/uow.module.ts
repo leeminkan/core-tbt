@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
-import { UnitOfWork } from './uow.abstract';
+
 import { TypeOrmUnitOfWork } from './typeorm/uow';
+import { UnitOfWork } from './uow.abstract';
 
 @Module({
   providers: [

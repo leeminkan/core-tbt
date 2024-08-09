@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+
 import { CoreDataModule } from '@libs/core-infrastructure';
 
 import { UserQueryService } from './user-query.service';

@@ -1,7 +1,8 @@
+import * as dotenv from 'dotenv';
+import { join } from 'path';
 import { DataSource } from 'typeorm';
 import { DataSourceOptions } from 'typeorm/data-source/DataSourceOptions';
-import { join } from 'path';
-import * as dotenv from 'dotenv';
+
 dotenv.config();
 
 const connectionOptions: DataSourceOptions = {

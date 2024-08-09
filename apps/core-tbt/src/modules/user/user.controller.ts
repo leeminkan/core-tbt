@@ -1,21 +1,21 @@
+import { SessionCommandService } from '@app/core-tbt/modules/session';
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
+  Controller,
   Delete,
+  Get,
+  Param,
   ParseIntPipe,
+  Patch,
+  Post,
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 
-import { SessionCommandService } from '@app/core-tbt/modules/session';
 import { UserCommandService } from './commands/user-command.service';
-import { UserQueryService } from './queries/user-query.service';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UpdateUserDto } from './dtos/update-user.dto';
+import { UserQueryService } from './queries/user-query.service';
 
 @Controller({
   path: 'user',

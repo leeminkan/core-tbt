@@ -1,6 +1,6 @@
 import { BaseEntity } from '../base.entity';
+import { BookingStatus, bookingStatus } from './booking.constants';
 import { BookingUpdateStatusError } from './booking.errors';
-import { bookingStatus, BookingStatus } from './booking.constants';
 
 export class Booking extends BaseEntity {
   id: number;

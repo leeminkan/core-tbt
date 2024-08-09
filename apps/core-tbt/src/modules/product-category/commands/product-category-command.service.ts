@@ -4,8 +4,8 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 
-import { ProductCategoryRepository } from '@libs/core-infrastructure';
 import { ProductCategory } from '@libs/core-domain';
+import { ProductCategoryRepository } from '@libs/core-infrastructure';
 
 import { CreateProductCategoryDto, UpdateProductCategoryDto } from '../dtos';
 

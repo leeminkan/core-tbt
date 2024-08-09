@@ -1,21 +1,22 @@
-import { NestFactory, Reflector } from '@nestjs/core';
 import {
   ClassSerializerInterceptor,
   ValidationPipe,
   VersioningType,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import helmet from 'helmet';
+import { NestFactory, Reflector } from '@nestjs/core';
 import cookieParser from 'cookie-parser';
+import helmet from 'helmet';
 
+import { validationOptions } from '@libs/core-shared';
+
+import { AppModule } from './app.module';
 import { AllConfigType } from './configs';
 import {
-  HttpExceptionFilter,
   DomainExceptionFilter,
+  HttpExceptionFilter,
   InfrastructureErrorExceptionFilter,
 } from './exceptions';
-import { validationOptions } from '@libs/core-shared';
-import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);

@@ -1,14 +1,14 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
+  Controller,
   Delete,
+  Get,
+  Param,
   ParseIntPipe,
-  UseGuards,
+  Patch,
+  Post,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 
@@ -19,15 +19,15 @@ import {
 } from '@libs/core-shared';
 
 import { ProductCommandService } from './commands/product-command.service';
-import { ProductQueryService } from './queries/product-query.service';
-import { ProductPopulateService } from './product-populate.service';
 import {
-  CreateProductDto,
-  UpdateProductDto,
-  GetListProductDto,
   BulkDeleteProductDto,
+  CreateProductDto,
+  GetListProductDto,
   ProductResponse,
+  UpdateProductDto,
 } from './dtos';
+import { ProductPopulateService } from './product-populate.service';
+import { ProductQueryService } from './queries/product-query.service';
 
 @Controller({
   path: 'product',

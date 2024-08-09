@@ -1,9 +1,9 @@
-import { DeepPartial, Nullable } from '@libs/core-shared';
 import { User as UserDomainEntity } from '@libs/core-domain';
 import {
   RepositoryOptions,
   ThrowNotFoundErrorOptions,
 } from '@libs/core-domain/repository.types';
+import { DeepPartial, Nullable } from '@libs/core-shared';
 
 export abstract class UserRepository {
   abstract createUser(

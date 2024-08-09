@@ -1,31 +1,30 @@
+import { Injectable } from '@nestjs/common';
 import {
   DataSource,
   DeepPartial,
   EntityManager,
   ILike,
-  IsNull,
   In,
+  IsNull,
   Repository,
 } from 'typeorm';
-import { Injectable } from '@nestjs/common';
 
-import { Nullable, ShallowNever } from '@libs/core-shared';
-import { SortDirection } from '@libs/core-shared/constants';
 import {
-  ProductCategory as ProductCategoryDomainEntity,
   FindAllAndCountArgs,
+  ProductCategory as ProductCategoryDomainEntity,
   ProductCategoryRepository as ProductCategoryRepositoryAbstract,
 } from '@libs/core-domain';
-
 import {
   RepositoryOptions,
   ThrowNotFoundErrorOptions,
 } from '@libs/core-domain/repository.types';
 import { RecordNotFoundException } from '@libs/core-infrastructure/base.errors';
 import { UnitOfWorkManager } from '@libs/core-infrastructure/unit-of-work';
+import { Nullable, ShallowNever } from '@libs/core-shared';
+import { SortDirection } from '@libs/core-shared/constants';
 
-import { ProductCategory as ProductCategorySchema } from './product-category.schema';
 import { ProductCategoryMapper } from './product-category.mapper';
+import { ProductCategory as ProductCategorySchema } from './product-category.schema';
 
 @Injectable()
 export class ProductCategoryRepository

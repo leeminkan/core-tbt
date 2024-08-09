@@ -1,11 +1,11 @@
-import { plainToClass, Transform, Type } from 'class-transformer';
+import { Transform, Type, plainToClass } from 'class-transformer';
 import {
+  IsBoolean,
+  IsEnum,
   IsNumber,
   IsOptional,
   IsString,
   ValidateNested,
-  IsEnum,
-  IsBoolean,
 } from 'class-validator';
 
 import { SortDirection, sortDirection } from '@libs/core-shared/constants';

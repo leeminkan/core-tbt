@@ -8,6 +8,7 @@ import {
 } from 'typeorm';
 
 import { TypeormBaseSchema } from '@libs/core-infrastructure/core-data/typeorm-base.schema';
+
 import { ProductCategoryAssociation } from '../../product/typeorm';
 
 @Entity({

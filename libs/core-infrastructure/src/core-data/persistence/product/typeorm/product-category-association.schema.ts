@@ -1,8 +1,8 @@
 import { Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
 
+import { ProductCategory } from '@libs/core-infrastructure/core-data/persistence/product-category/typeorm';
 import { TypeormBaseSchema } from '@libs/core-infrastructure/core-data/typeorm-base.schema';
 
-import { ProductCategory } from '@libs/core-infrastructure/core-data/persistence/product-category/typeorm';
 import { Product } from './product.schema';
 
 @Entity({

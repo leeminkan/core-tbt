@@ -1,9 +1,8 @@
-import { Injectable } from '@nestjs/common';
-import { JwtService as CoreJwtService } from '@nestjs/jwt';
-import { ConfigService } from '@nestjs/config';
-import ms from 'ms';
-
 import { AllConfigType } from '@app/core-tbt/configs';
+import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { JwtService as CoreJwtService } from '@nestjs/jwt';
+import ms from 'ms';
 
 @Injectable()
 export class TokenService {

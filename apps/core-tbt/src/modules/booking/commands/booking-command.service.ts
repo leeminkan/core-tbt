@@ -5,15 +5,15 @@ import {
 } from '@nestjs/common';
 
 import {
+  Booking,
+  BookingUpdateStatusError,
+  bookingStatus,
+} from '@libs/core-domain';
+import {
   BookingRepository,
   CustomerRepository,
   UnitOfWork,
 } from '@libs/core-infrastructure';
-import {
-  Booking,
-  bookingStatus,
-  BookingUpdateStatusError,
-} from '@libs/core-domain';
 import { Nullable } from '@libs/core-shared';
 
 import { CreateBookingDto } from '../dtos/create-booking.dto';

@@ -1,9 +1,9 @@
 import {
   IsNotEmpty,
+  IsOptional,
   IsString,
   MaxLength,
   MinLength,
-  IsOptional,
 } from 'class-validator';
 
 export class UpdateUserDto {

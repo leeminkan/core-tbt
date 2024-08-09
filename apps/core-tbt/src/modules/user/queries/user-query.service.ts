@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { UserRepository } from '@libs/core-infrastructure';
+
 import { User } from '@libs/core-domain';
+import { UserRepository } from '@libs/core-infrastructure';
 
 @Injectable()
 export class UserQueryService {

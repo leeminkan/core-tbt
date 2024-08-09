@@ -1,8 +1,7 @@
+import { AllConfigType } from '@app/core-tbt/configs';
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule as CoreJwtModule } from '@nestjs/jwt';
-
-import { AllConfigType } from '@app/core-tbt/configs';
 
 import { TokenService } from './token.service';
 

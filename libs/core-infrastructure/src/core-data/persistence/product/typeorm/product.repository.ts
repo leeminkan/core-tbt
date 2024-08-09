@@ -1,3 +1,5 @@
+import { Injectable } from '@nestjs/common';
+import { difference } from 'lodash';
 import {
   Between,
   DataSource,
@@ -9,11 +11,7 @@ import {
   MoreThanOrEqual,
   Repository,
 } from 'typeorm';
-import { Injectable } from '@nestjs/common';
-import { difference } from 'lodash';
 
-import { Nullable, ShallowNever } from '@libs/core-shared';
-import { SortDirection } from '@libs/core-shared/constants';
 import {
   Product as ProductDomainEntity,
   ProductRepository as ProductRepositoryAbstract,
@@ -24,10 +22,12 @@ import {
 } from '@libs/core-domain/repository.types';
 import { RecordNotFoundException } from '@libs/core-infrastructure/base.errors';
 import { UnitOfWorkManager } from '@libs/core-infrastructure/unit-of-work';
+import { Nullable, ShallowNever } from '@libs/core-shared';
+import { SortDirection } from '@libs/core-shared/constants';
 
-import { Product as ProductSchema } from './product.schema';
-import { ProductMapper } from './product.mapper';
 import { ProductCategoryAssociation } from './product-category-association.schema';
+import { ProductMapper } from './product.mapper';
+import { Product as ProductSchema } from './product.schema';
 
 @Injectable()
 export class ProductRepository implements ProductRepositoryAbstract {

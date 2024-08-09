@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+
 import { CoreDataModule } from '@libs/core-infrastructure';
 
 import { BookingQueryService } from './booking-query.service';

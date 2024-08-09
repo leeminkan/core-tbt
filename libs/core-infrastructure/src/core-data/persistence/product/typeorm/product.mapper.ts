@@ -1,4 +1,5 @@
 import { plainToInstance } from 'class-transformer';
+
 import { Product as ProductDomainEntity } from '@libs/core-domain';
 import { BaseMapper } from '@libs/core-infrastructure/base-mapper.abstract';
 

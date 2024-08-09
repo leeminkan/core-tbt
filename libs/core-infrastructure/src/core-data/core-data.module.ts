@@ -2,44 +2,43 @@ import { DynamicModule, Module, Provider } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import {
-  UserRepository,
-  SessionRepository,
-  CustomerRepository,
+  CORE_DATA_OPTIONS,
+  CoreDataAsyncOptions,
+  CoreDataOption,
+} from './core-data.types';
+import {
   BookingRepository,
-  ProductRepository,
+  CustomerRepository,
   ProductCategoryRepository,
+  ProductRepository,
+  SessionRepository,
+  UserRepository,
 } from './persistence';
 import {
-  User,
-  UserRepository as TypeOrmUserRepository,
-} from './persistence/user/typeorm';
-import {
-  Session,
-  SessionRepository as TypeOrmSessionRepository,
-} from './persistence/session/typeorm';
+  Booking,
+  BookingRepository as TypeOrmBookingRepository,
+} from './persistence/booking/typeorm';
 import {
   Customer,
   CustomerRepository as TypeOrmCustomerRepository,
 } from './persistence/customer/typeorm';
 import {
-  Booking,
-  BookingRepository as TypeOrmBookingRepository,
-} from './persistence/booking/typeorm';
+  ProductCategory,
+  ProductCategoryRepository as TypeOrmProductCategoryRepository,
+} from './persistence/product-category/typeorm';
 import {
   Product,
   ProductCategoryAssociation,
   ProductRepository as TypeOrmProductRepository,
 } from './persistence/product/typeorm';
 import {
-  ProductCategory,
-  ProductCategoryRepository as TypeOrmProductCategoryRepository,
-} from './persistence/product-category/typeorm';
-
+  Session,
+  SessionRepository as TypeOrmSessionRepository,
+} from './persistence/session/typeorm';
 import {
-  CoreDataOption,
-  CoreDataAsyncOptions,
-  CORE_DATA_OPTIONS,
-} from './core-data.types';
+  UserRepository as TypeOrmUserRepository,
+  User,
+} from './persistence/user/typeorm';
 
 @Module({})
 export class CoreDataModule {
