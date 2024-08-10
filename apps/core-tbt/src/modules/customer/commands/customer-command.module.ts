@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
 
-import { CoreDataModule } from '@libs/core-infrastructure';
+import { CoreDataTypeormModule } from '@libs/core-infrastructure';
 
 import { CustomerCommandService } from './customer-command.service';
 
 @Module({
-  imports: [CoreDataModule.forFeature()],
+  imports: [CoreDataTypeormModule.forFeature()],
   providers: [CustomerCommandService],
   exports: [CustomerCommandService],
 })

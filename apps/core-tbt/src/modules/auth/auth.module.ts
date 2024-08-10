@@ -3,7 +3,7 @@ import { PassportModule } from '@nestjs/passport';
 
 import { JwtModule } from '@app/core-tbt/modules/jwt';
 
-import { CoreDataModule } from '@libs/core-infrastructure';
+import { CoreDataTypeormModule } from '@libs/core-infrastructure';
 
 import { AuthController } from './auth.controller';
 import { AuthCommandModule } from './commands';
@@ -12,7 +12,7 @@ import { JwtStrategy } from './strategies/jwt.strategy';
 
 @Module({
   imports: [
-    CoreDataModule.forFeature(),
+    CoreDataTypeormModule.forFeature(),
     JwtModule,
     PassportModule,
     AuthCommandModule,

@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
 
-import { CoreDataModule, UowModule } from '@libs/core-infrastructure';
+import { CoreDataTypeormModule, UowModule } from '@libs/core-infrastructure';
 
 import { BookingCommandService } from './booking-command.service';
 
 @Module({
-  imports: [CoreDataModule.forFeature(), UowModule],
+  imports: [CoreDataTypeormModule.forFeature(), UowModule],
   providers: [BookingCommandService],
   exports: [BookingCommandService],
 })

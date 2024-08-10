@@ -2,9 +2,8 @@ import { DynamicModule, Module, Provider } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import {
-  CORE_DATA_OPTIONS,
-  CoreDataAsyncOptions,
-  CoreDataOption,
+  CoreDataTypeormAsyncOptions,
+  CoreDataTypeormOption,
 } from './core-data.types';
 import {
   BookingRepository,
@@ -41,8 +40,8 @@ import {
 } from './persistence/user/typeorm';
 
 @Module({})
-export class CoreDataModule {
-  static defaultTypeormEntites = [
+export class CoreDataTypeormModule {
+  static defaultEntities = [
     User,
     Session,
     Customer,
@@ -52,39 +51,33 @@ export class CoreDataModule {
     ProductCategoryAssociation,
   ];
 
-  static forRoot(options: CoreDataOption): DynamicModule {
+  static forRoot(options: CoreDataTypeormOption): DynamicModule {
     return {
-      module: CoreDataModule,
+      module: CoreDataTypeormModule,
       imports: [
         TypeOrmModule.forRoot({
           ...options.typeOrmOptions,
           // override options
-          entities: this.defaultTypeormEntites,
+          entities: this.defaultEntities,
         }),
       ],
     };
   }
 
-  static forRootAsync(options: CoreDataAsyncOptions): DynamicModule {
+  static forRootAsync(options: CoreDataTypeormAsyncOptions): DynamicModule {
     return {
-      module: CoreDataModule,
+      module: CoreDataTypeormModule,
       imports: [
         TypeOrmModule.forRootAsync({
-          extraProviders: [
-            {
-              provide: CORE_DATA_OPTIONS,
-              useFactory: options.useFactory,
-              inject: options.inject ?? [],
-            },
-          ],
-          useFactory: async (options: CoreDataOption) => {
+          useFactory: async (_options) => {
+            const coreDataTypeormOption = await options.useFactory(_options);
             return {
-              ...options.typeOrmOptions,
+              ...coreDataTypeormOption.typeOrmOptions,
               // override options
-              entities: this.defaultTypeormEntites,
+              entities: this.defaultEntities,
             };
           },
-          inject: [CORE_DATA_OPTIONS],
+          inject: options.inject ?? [],
         }),
       ],
     };
@@ -118,7 +111,7 @@ export class CoreDataModule {
       },
     ];
     return {
-      module: CoreDataModule,
+      module: CoreDataTypeormModule,
       providers: providers,
       exports: providers,
     };

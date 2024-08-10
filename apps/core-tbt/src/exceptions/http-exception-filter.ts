@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { Request, Response } from 'express';
 
-import { ValidationFailedError } from './index';
+import { ValidationFailedError } from '@libs/core-shared';
 
 @Catch(HttpException)
 export class HttpExceptionFilter implements ExceptionFilter {

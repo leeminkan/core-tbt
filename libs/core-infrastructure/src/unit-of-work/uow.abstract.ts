@@ -1,9 +1,10 @@
+import { Transaction } from 'sequelize';
 import { EntityManager } from 'typeorm';
 
 // TypeORM, manager is EntityManager
 // Sequelize, manager is Sequelize
 // export type UnitOfWorkManager = EntityManager | Sequelize;
-export type UnitOfWorkManager = EntityManager;
+export type UnitOfWorkManager = EntityManager | Transaction;
 
 export abstract class UnitOfWork {
   abstract runInTransaction<R>(

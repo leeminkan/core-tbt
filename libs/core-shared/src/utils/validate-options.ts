@@ -4,7 +4,7 @@ import {
   ValidationPipeOptions,
 } from '@nestjs/common';
 
-import { ValidationFailedError } from '@app/core-tbt/exceptions';
+import { ValidationFailedError } from './validation-failed.error';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore

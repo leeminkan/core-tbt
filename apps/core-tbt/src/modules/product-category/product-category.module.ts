@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 
-import { CoreDataModule } from '@libs/core-infrastructure';
+import { CoreDataTypeormModule } from '@libs/core-infrastructure';
 
 import { ProductCategoryCommandModule } from './commands/product-category-command.module';
 import { ProductCategoryController } from './product-category.controller';
@@ -8,7 +8,7 @@ import { ProductCategoryQueryModule } from './queries/product-category-query.mod
 
 @Module({
   imports: [
-    CoreDataModule.forFeature(),
+    CoreDataTypeormModule.forFeature(),
     ProductCategoryCommandModule,
     ProductCategoryQueryModule,
   ],

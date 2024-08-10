@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
 
-import { CoreDataModule } from '@libs/core-infrastructure';
+import { CoreDataSequelizeModule } from '@libs/core-infrastructure';
 
 import { UserQueryService } from './user-query.service';
 
 @Module({
-  imports: [CoreDataModule.forFeature()],
+  imports: [CoreDataSequelizeModule.forFeature()],
   providers: [UserQueryService],
   exports: [UserQueryService],
 })
