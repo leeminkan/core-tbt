@@ -1,4 +1,3 @@
-import { SessionCommandService } from '@app/core-tbt/modules/session';
 import {
   Body,
   Controller,
@@ -11,6 +10,8 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+
+import { SessionCommandService } from '@app/core-tbt/modules/session';
 
 import { UserCommandService } from './commands/user-command.service';
 import { CreateUserDto } from './dtos/create-user.dto';

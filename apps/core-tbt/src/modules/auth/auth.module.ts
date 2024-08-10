@@ -1,6 +1,7 @@
-import { JwtModule } from '@app/core-tbt/modules/jwt';
 import { Module } from '@nestjs/common';
 import { PassportModule } from '@nestjs/passport';
+
+import { JwtModule } from '@app/core-tbt/modules/jwt';
 
 import { CoreDataModule } from '@libs/core-infrastructure';
 

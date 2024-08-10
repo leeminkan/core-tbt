@@ -1,5 +1,6 @@
-import { SessionCommandModule } from '@app/core-tbt/modules/session';
 import { Module } from '@nestjs/common';
+
+import { SessionCommandModule } from '@app/core-tbt/modules/session';
 
 import { CoreDataModule } from '@libs/core-infrastructure';
 

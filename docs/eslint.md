@@ -10,3 +10,18 @@
     },
 ]
 ```
+
+- Disable error `Insert ⏎ prettier/prettier` (https://github.com/prettier/eslint-plugin-prettier/issues/211)
+
+```
+// eslintrc.js
+
+rules: {
+    'prettier/prettier': [
+      'error',
+      {
+        endOfLine: 'auto',
+      },
+    ],
+}
+```
