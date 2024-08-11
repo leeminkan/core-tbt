@@ -59,18 +59,32 @@ export class ProductRepository implements ProductRepositoryAbstract {
     return manager.withRepository(new Repository(ProductSchema, manager));
   }
 
+  getProductCategoryAssociationRepository(manager?: UnitOfWorkManager) {
+    if (!manager) return this.productCategoryAssociationRepository;
+
+    if (!(manager instanceof EntityManager)) {
+      throw new Error('Manager is not supported');
+    }
+
+    return manager.withRepository(
+      new Repository(ProductCategoryAssociation, manager),
+    );
+  }
+
   async create(
     data: DeepPartial<ProductDomainEntity>,
     options?: RepositoryOptions,
   ) {
     const repository = this.getRepository(options?.unitOfWorkManager);
+    const productCategoryAssociationRepository =
+      this.getProductCategoryAssociationRepository(options?.unitOfWorkManager);
     const prepareData = repository.create({
       ...data,
     });
     const persistedData = await repository.save(prepareData);
 
     if (data.categoryIds && data.categoryIds.length) {
-      await this.productCategoryAssociationRepository
+      await productCategoryAssociationRepository
         .createQueryBuilder()
         .insert()
         .orIgnore(true)
@@ -111,6 +125,8 @@ export class ProductRepository implements ProductRepositoryAbstract {
     options?: RepositoryOptions,
   ) {
     const repository = this.getRepository(options?.unitOfWorkManager);
+    const productCategoryAssociationRepository =
+      this.getProductCategoryAssociationRepository(options?.unitOfWorkManager);
 
     let priceWhere;
     if (fromPrice && toPrice) {
@@ -137,7 +153,7 @@ export class ProductRepository implements ProductRepositoryAbstract {
       }),
     });
 
-    const categories = await this.productCategoryAssociationRepository.find({
+    const categories = await productCategoryAssociationRepository.find({
       where: {
         product_id: In(data.map((item) => item.id)),
       },
@@ -172,6 +188,8 @@ export class ProductRepository implements ProductRepositoryAbstract {
       | (RepositoryOptions & ThrowNotFoundErrorOptions),
   ): Promise<Nullable<ProductDomainEntity>> {
     const repository = this.getRepository(options?.unitOfWorkManager);
+    const productCategoryAssociationRepository =
+      this.getProductCategoryAssociationRepository(options?.unitOfWorkManager);
     const row = await repository.findOneBy({ id });
 
     if (!row) {
@@ -184,7 +202,7 @@ export class ProductRepository implements ProductRepositoryAbstract {
       return null;
     }
 
-    const categories = await this.productCategoryAssociationRepository.find({
+    const categories = await productCategoryAssociationRepository.find({
       where: {
         product_id: row.id,
       },
@@ -201,13 +219,14 @@ export class ProductRepository implements ProductRepositoryAbstract {
     options?: RepositoryOptions,
   ) {
     const repository = this.getRepository(options?.unitOfWorkManager);
+    const productCategoryAssociationRepository =
+      this.getProductCategoryAssociationRepository(options?.unitOfWorkManager);
 
-    const currentCategories =
-      await this.productCategoryAssociationRepository.find({
-        where: {
-          product_id: id,
-        },
-      });
+    const currentCategories = await productCategoryAssociationRepository.find({
+      where: {
+        product_id: id,
+      },
+    });
     const currentCategoryIds = currentCategories.map(
       (item) => item.category_id,
     );
@@ -215,13 +234,13 @@ export class ProductRepository implements ProductRepositoryAbstract {
     const idsToRemove = difference(currentCategoryIds, categoryIds);
     const idsToAdd = difference(categoryIds, currentCategoryIds);
     if (idsToRemove.length) {
-      await this.productCategoryAssociationRepository.delete({
+      await productCategoryAssociationRepository.delete({
         product_id: id,
         category_id: In(idsToRemove),
       });
     }
     if (idsToAdd.length) {
-      await this.productCategoryAssociationRepository
+      await productCategoryAssociationRepository
         .createQueryBuilder()
         .insert()
         .orIgnore(true)

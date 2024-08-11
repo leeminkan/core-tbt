@@ -5,12 +5,16 @@ import {
   Booking as BookingDomainEntity,
   BookingRepository as BookingRepositoryAbstract,
 } from '@libs/core-domain';
-import { RepositoryOptions } from '@libs/core-domain/repository.types';
+import {
+  RepositoryOptions,
+  ThrowNotFoundErrorOptions,
+} from '@libs/core-domain/repository.types';
 import { UnitOfWorkManager } from '@libs/core-infrastructure';
 import {
   RecordNotFoundException,
   VersionMismatchError,
 } from '@libs/core-infrastructure/base.errors';
+import { Nullable, ShallowNever } from '@libs/core-shared';
 
 import { BookingMapper } from './booking.mapper';
 import { Booking as BookingSchema } from './booking.schema';
@@ -76,10 +80,34 @@ export class BookingRepository implements BookingRepositoryAbstract {
     };
   }
 
-  async findById(id: number, options?: RepositoryOptions) {
+  async findById(
+    id: number,
+    options?: RepositoryOptions & ShallowNever<ThrowNotFoundErrorOptions>,
+  ): Promise<Nullable<BookingDomainEntity>>;
+  async findById(
+    id: number,
+    options: RepositoryOptions & ThrowNotFoundErrorOptions,
+  ): Promise<BookingDomainEntity>;
+  async findById(
+    id: number,
+    options?:
+      | (RepositoryOptions & ShallowNever<ThrowNotFoundErrorOptions>)
+      | (RepositoryOptions & ThrowNotFoundErrorOptions),
+  ): Promise<Nullable<BookingDomainEntity>> {
     const repository = this.getRepository(options?.unitOfWorkManager);
     const row = await repository.findOneBy({ id });
-    return row ? this.mapper.mapToDomain(row) : null;
+
+    if (!row) {
+      if (
+        options &&
+        'throwNotFoundError' in options &&
+        options.throwNotFoundError
+      ) {
+      }
+      return null;
+    }
+
+    return this.mapper.mapToDomain(row);
   }
 
   async updateById(

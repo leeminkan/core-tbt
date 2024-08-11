@@ -19,9 +19,13 @@ export type FindAllAndCountArgs = {
   };
 };
 
+export type CreateProductCategoryData =
+  DeepPartial<ProductCategoryDomainEntity> &
+    Pick<ProductCategoryDomainEntity, 'parentId' | 'name' | 'description'>;
+
 export abstract class ProductCategoryRepository {
   abstract create(
-    data: DeepPartial<ProductCategoryDomainEntity>,
+    data: CreateProductCategoryData,
     options?: RepositoryOptions,
   ): Promise<ProductCategoryDomainEntity>;
 

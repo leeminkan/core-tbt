@@ -3,46 +3,52 @@ import { Transaction } from 'sequelize';
 import { Sequelize } from 'sequelize-typescript';
 
 import {
-  User as UserDomainEntity,
-  UserRepository as UserRepositoryAbstract,
+  Customer as CustomerDomainEntity,
+  CustomerRepository as CustomerRepositoryAbstract,
 } from '@libs/core-domain';
 import {
   RepositoryOptions,
   ThrowNotFoundErrorOptions,
 } from '@libs/core-domain/repository.types';
 import { RecordNotFoundException } from '@libs/core-infrastructure/base.errors';
-import { DeepPartial, Nullable } from '@libs/core-shared';
+import { DeepPartial, Nullable, ShallowNever } from '@libs/core-shared';
 
-import { UserMapper } from './user.mapper';
-import { User } from './user.schema';
+import { CustomerMapper } from './customer.mapper';
+import { Customer } from './customer.schema';
 
 @Injectable()
-export class UserRepository implements UserRepositoryAbstract {
-  private mapper: UserMapper;
+export class CustomerRepository implements CustomerRepositoryAbstract {
+  private mapper: CustomerMapper;
   constructor(private readonly connection: Sequelize) {
-    this.mapper = new UserMapper();
+    this.mapper = new CustomerMapper();
   }
 
   getRepository() {
-    return this.connection.getRepository(User);
+    return this.connection.getRepository(Customer);
   }
 
-  async createUser(
-    data: DeepPartial<UserDomainEntity>,
+  async create(
+    data: DeepPartial<CustomerDomainEntity>,
     options?: RepositoryOptions,
-  ): Promise<UserDomainEntity> {
+  ) {
     const repository = this.getRepository();
-    const user = await repository.create(data, {
+    const result = await repository.create(data, {
       transaction: options?.unitOfWorkManager as Transaction,
     });
 
-    return this.mapper.mapToDomain(user);
+    return this.mapper.mapToDomain(result);
   }
 
-  async findAllAndCountUser(
-    { take, skip }: { take?: number; skip?: number },
+  async findAllAndCount(
+    {
+      take = 20,
+      skip = 0,
+    }: {
+      take?: number;
+      skip?: number;
+    },
     options?: RepositoryOptions,
-  ): Promise<{ data: UserDomainEntity[]; totalCount: number }> {
+  ) {
     const repository = this.getRepository();
     const { rows, count } = await repository.findAndCountAll({
       limit: take,
@@ -58,18 +64,18 @@ export class UserRepository implements UserRepositoryAbstract {
 
   async findById(
     id: number,
-    options?: RepositoryOptions,
-  ): Promise<Nullable<UserDomainEntity>>;
+    options?: RepositoryOptions & ShallowNever<ThrowNotFoundErrorOptions>,
+  ): Promise<Nullable<CustomerDomainEntity>>;
   async findById(
     id: number,
     options: RepositoryOptions & ThrowNotFoundErrorOptions,
-  ): Promise<UserDomainEntity>;
+  ): Promise<CustomerDomainEntity>;
   async findById(
     id: number,
     options?:
-      | RepositoryOptions
+      | (RepositoryOptions & ShallowNever<ThrowNotFoundErrorOptions>)
       | (RepositoryOptions & ThrowNotFoundErrorOptions),
-  ): Promise<Nullable<UserDomainEntity>> {
+  ): Promise<Nullable<CustomerDomainEntity>> {
     const repository = this.getRepository();
     const row = await repository.findOne({
       where: {
@@ -91,29 +97,9 @@ export class UserRepository implements UserRepositoryAbstract {
     return this.mapper.mapToDomain(row);
   }
 
-  async findUserByUsername(
-    username: string,
-    options?: RepositoryOptions & ThrowNotFoundErrorOptions,
-  ): Promise<Nullable<UserDomainEntity>> {
-    const repository = this.getRepository();
-    const user = await repository.findOne({
-      where: { username },
-      transaction: options?.unitOfWorkManager as Transaction,
-    });
-
-    if (!user) {
-      if (options?.throwNotFoundError) {
-        throw new RecordNotFoundException();
-      }
-      return null;
-    }
-
-    return this.mapper.mapToDomain(user);
-  }
-
-  async updateUserById(
+  async updateById(
     id: number,
-    data: DeepPartial<UserDomainEntity>,
+    data: DeepPartial<CustomerDomainEntity>,
     options?: RepositoryOptions,
   ) {
     const repository = this.getRepository();
@@ -130,21 +116,21 @@ export class UserRepository implements UserRepositoryAbstract {
     );
   }
 
-  async findAndUpdateUserById(
+  async findAndUpdateById(
     id: number,
-    data: DeepPartial<UserDomainEntity>,
+    data: DeepPartial<CustomerDomainEntity>,
     options?: RepositoryOptions,
   ) {
-    const user = await this.findById(id, options);
+    const row = await this.findById(id, options);
 
-    if (!user) {
+    if (!row) {
       throw new RecordNotFoundException();
     }
 
-    return await this.updateUserById(id, data, options);
+    return await this.updateById(id, data, options);
   }
 
-  async deleteUserById(id: number, options?: RepositoryOptions) {
+  async deleteById(id: number, options?: RepositoryOptions) {
     const repository = this.getRepository();
     return await repository.destroy({
       where: { id },

@@ -7,9 +7,19 @@ import {
 } from '../repository.types';
 import { Product as ProductDomainEntity } from './product.entity';
 
+export type CreateProductData = DeepPartial<
+  Omit<ProductDomainEntity, 'name' | 'description' | 'price' | 'categoryIds'>
+> &
+  Pick<ProductDomainEntity, 'name' | 'description' | 'price' | 'categoryIds'>;
+
+export type UpdateProductData = DeepPartial<
+  Omit<ProductDomainEntity, 'categoryIds'>
+> &
+  Partial<Pick<ProductDomainEntity, 'categoryIds'>>;
+
 export abstract class ProductRepository {
   abstract create(
-    data: DeepPartial<ProductDomainEntity>,
+    data: CreateProductData,
     options?: RepositoryOptions,
   ): Promise<ProductDomainEntity>;
 
@@ -41,13 +51,13 @@ export abstract class ProductRepository {
 
   abstract updateById(
     id: number,
-    data: DeepPartial<ProductDomainEntity>,
+    data: UpdateProductData,
     options?: RepositoryOptions,
   ): void;
 
   abstract findAndUpdateById(
     id: number,
-    data: DeepPartial<ProductDomainEntity>,
+    data: UpdateProductData,
     options?: RepositoryOptions,
   ): void;
 

@@ -1,11 +1,20 @@
-import { DeepPartial, Nullable } from '@libs/core-shared';
+import { DeepPartial, Nullable, ShallowNever } from '@libs/core-shared';
 
-import { RepositoryOptions } from '../repository.types';
+import {
+  RepositoryOptions,
+  ThrowNotFoundErrorOptions,
+} from '../repository.types';
 import { Booking as BookingDomainEntity } from './booking.entity';
+
+export type CreateBookingData = DeepPartial<BookingDomainEntity> &
+  Pick<BookingDomainEntity, 'customerId' | 'startTime' | 'endTime'>;
+
+export type UpdateBookingData = DeepPartial<BookingDomainEntity> &
+  Partial<Pick<BookingDomainEntity, 'startTime' | 'endTime'>>;
 
 export abstract class BookingRepository {
   abstract create(
-    data: DeepPartial<BookingDomainEntity>,
+    data: CreateBookingData,
     options?: RepositoryOptions,
   ): Promise<BookingDomainEntity>;
 
@@ -22,23 +31,27 @@ export abstract class BookingRepository {
 
   abstract findById(
     id: number,
-    options?: RepositoryOptions,
+    options?: RepositoryOptions & ShallowNever<ThrowNotFoundErrorOptions>,
   ): Promise<Nullable<BookingDomainEntity>>;
+  abstract findById(
+    id: number,
+    options: RepositoryOptions & ThrowNotFoundErrorOptions,
+  ): Promise<BookingDomainEntity>;
 
   abstract updateById(
     id: number,
-    data: DeepPartial<BookingDomainEntity>,
+    data: UpdateBookingData,
     options?: RepositoryOptions,
   ): void;
   abstract updateByIdVersion(
     where: { id: number; version: number },
-    data: DeepPartial<BookingDomainEntity>,
+    data: UpdateBookingData,
     options?: RepositoryOptions,
   ): void;
 
   abstract findAndUpdateById(
     id: number,
-    data: DeepPartial<BookingDomainEntity>,
+    data: UpdateBookingData,
     options?: RepositoryOptions,
   ): void;
 

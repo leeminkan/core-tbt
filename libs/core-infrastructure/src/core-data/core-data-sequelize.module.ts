@@ -2,12 +2,36 @@ import { DynamicModule, Module, Provider } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
 import pg from 'pg';
 
-import { SessionRepository, UserRepository } from '@libs/core-domain';
+import {
+  BookingRepository,
+  CustomerRepository,
+  ProductCategoryRepository,
+  ProductRepository,
+  SessionRepository,
+  UserRepository,
+} from '@libs/core-domain';
 
 import {
   CoreDataSequelizeAsyncOptions,
   CoreDataSequelizeOption,
 } from './core-data-sequelize.types';
+import {
+  Booking,
+  BookingRepository as PostgresBookingRepository,
+} from './persistence/booking/sequelize';
+import {
+  Customer,
+  CustomerRepository as PostgresCustomerRepository,
+} from './persistence/customer/sequelize';
+import {
+  ProductCategoryRepository as PostgresProductCategoryRepository,
+  ProductCategory,
+} from './persistence/product-category/sequelize';
+import {
+  ProductRepository as PostgresProductRepository,
+  Product,
+  ProductCategoryAssociation,
+} from './persistence/product/sequelize';
 import {
   SessionRepository as PostgresSessionRepository,
   Session,
@@ -21,7 +45,15 @@ import { SequelizeUnitOfWork } from './unit-of-work/sequelize/uow';
 
 @Module({})
 export class CoreDataSequelizeModule {
-  static defaultEntities = [User, Session];
+  static defaultEntities = [
+    User,
+    Session,
+    Customer,
+    Booking,
+    ProductCategory,
+    Product,
+    ProductCategoryAssociation,
+  ];
 
   static forRoot(options: CoreDataSequelizeOption): DynamicModule {
     return {
@@ -72,6 +104,22 @@ export class CoreDataSequelizeModule {
       {
         provide: SessionRepository,
         useClass: PostgresSessionRepository,
+      },
+      {
+        provide: CustomerRepository,
+        useClass: PostgresCustomerRepository,
+      },
+      {
+        provide: BookingRepository,
+        useClass: PostgresBookingRepository,
+      },
+      {
+        provide: ProductCategoryRepository,
+        useClass: PostgresProductCategoryRepository,
+      },
+      {
+        provide: ProductRepository,
+        useClass: PostgresProductRepository,
       },
     ];
 

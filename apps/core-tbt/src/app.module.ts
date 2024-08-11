@@ -56,7 +56,11 @@ import { UserModule } from './modules/user';
             username: config.getOrThrow('database.username', { infer: true }),
             password: config.getOrThrow('database.password', { infer: true }),
             synchronize: false,
-            logging: true,
+            logging: console.log,
+            pool: {
+              min: 5,
+              max: 5,
+            },
           },
         };
       },

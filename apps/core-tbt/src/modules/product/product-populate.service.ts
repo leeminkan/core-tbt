@@ -46,11 +46,6 @@ export class ProductPopulateService {
       };
     });
 
-    console.log('allCategoryIds', {
-      allCategoryIds,
-      allCategories,
-    });
-
     return populatedProducts;
   }
 }

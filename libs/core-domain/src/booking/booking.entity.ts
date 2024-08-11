@@ -13,8 +13,8 @@ export class Booking extends BaseEntity {
   version: number;
 
   cancel() {
-    if (this.status !== bookingStatus.CREATED)
-      throw new BookingUpdateStatusError(this.status, bookingStatus.CANCELLED);
+    // if (this.status !== bookingStatus.CREATED)
+    //   throw new BookingUpdateStatusError(this.status, bookingStatus.CANCELLED);
     this.status = bookingStatus.CANCELLED;
   }
 
