@@ -1,5 +1,6 @@
-import { UnitOfWorkManager } from '../../core-infrastructure/src/unit-of-work';
+import { UnitOfWorkManager } from '@libs/core-infrastructure';
 
+// TODO: need to decouple with core-infrastructure
 export type RepositoryOptions = {
   unitOfWorkManager?: UnitOfWorkManager;
 };

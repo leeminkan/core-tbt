@@ -1,10 +1,14 @@
-import { Session as SessionDomainEntity } from '@libs/core-domain';
-import { RepositoryOptions } from '@libs/core-domain/repository.types';
 import { DeepPartial, Nullable } from '@libs/core-shared';
+
+import { RepositoryOptions } from '../repository.types';
+import { Session as SessionDomainEntity } from './session.entity';
+
+export type CreateSessionData = DeepPartial<SessionDomainEntity> &
+  Pick<SessionDomainEntity, 'userId'>;
 
 export abstract class SessionRepository {
   abstract createSession(
-    data: DeepPartial<SessionDomainEntity>,
+    data: CreateSessionData,
     options?: RepositoryOptions,
   ): Promise<SessionDomainEntity>;
 

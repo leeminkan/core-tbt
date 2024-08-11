@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
-import { Product } from '@libs/core-domain';
-import { ProductCategoryRepository } from '@libs/core-infrastructure';
+import { Product, ProductCategoryRepository } from '@libs/core-domain';
 
 @Injectable()
 export class ProductPopulateService {

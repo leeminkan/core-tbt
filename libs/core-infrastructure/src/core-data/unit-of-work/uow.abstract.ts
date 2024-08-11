@@ -2,8 +2,7 @@ import { Transaction } from 'sequelize';
 import { EntityManager } from 'typeorm';
 
 // TypeORM, manager is EntityManager
-// Sequelize, manager is Sequelize
-// export type UnitOfWorkManager = EntityManager | Sequelize;
+// Sequelize, manager is Sequelize Transaction
 export type UnitOfWorkManager = EntityManager | Transaction;
 
 export abstract class UnitOfWork {

@@ -6,7 +6,7 @@ import {
   SessionRepository as SessionRepositoryAbstract,
 } from '@libs/core-domain';
 import { RepositoryOptions } from '@libs/core-domain/repository.types';
-import { UnitOfWorkManager } from '@libs/core-infrastructure/unit-of-work';
+import { UnitOfWorkManager } from '@libs/core-infrastructure';
 
 import { SessionMapper } from './session.mapper';
 import { Session as SessionSchema } from './session.schema';
@@ -44,7 +44,7 @@ export class SessionRepository implements SessionRepositoryAbstract {
       user_id: userId,
     });
     const session = await repository.save(prepareSession);
-    return SessionMapper.mapToDomain(session);
+    return this.mapper.mapToDomain(session);
   }
 
   async findAllAndCountByUserId(
@@ -62,7 +62,7 @@ export class SessionRepository implements SessionRepositoryAbstract {
     });
 
     return {
-      data: data.map((item) => SessionMapper.mapToDomain(item)),
+      data: data.map((item) => this.mapper.mapToDomain(item)),
       totalCount,
     };
   }
@@ -70,7 +70,7 @@ export class SessionRepository implements SessionRepositoryAbstract {
   async findSessionById(id: string, options?: RepositoryOptions) {
     const repository = this.getRepository(options?.unitOfWorkManager);
     const session = await repository.findOneBy({ id });
-    return session ? SessionMapper.mapToDomain(session) : null;
+    return session ? this.mapper.mapToDomain(session) : null;
   }
 
   async updateSessionById(

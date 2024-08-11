@@ -2,17 +2,18 @@ import { DynamicModule, Module, Provider } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import {
-  CoreDataTypeormAsyncOptions,
-  CoreDataTypeormOption,
-} from './core-data.types';
-import {
   BookingRepository,
   CustomerRepository,
   ProductCategoryRepository,
   ProductRepository,
   SessionRepository,
   UserRepository,
-} from './persistence';
+} from '@libs/core-domain';
+
+import {
+  CoreDataTypeormAsyncOptions,
+  CoreDataTypeormOption,
+} from './core-data-typeorm.types';
 import {
   Booking,
   BookingRepository as TypeOrmBookingRepository,
@@ -38,6 +39,8 @@ import {
   UserRepository as TypeOrmUserRepository,
   User,
 } from './persistence/user/typeorm';
+import { UnitOfWork } from './unit-of-work';
+import { TypeormUnitOfWork } from './unit-of-work/typeorm/uow';
 
 @Module({})
 export class CoreDataTypeormModule {
@@ -85,6 +88,12 @@ export class CoreDataTypeormModule {
 
   static forFeature(): DynamicModule {
     const providers: Provider[] = [
+      // unit of work
+      {
+        provide: UnitOfWork,
+        useClass: TypeormUnitOfWork,
+      },
+      // repositories
       {
         provide: UserRepository,
         useClass: TypeOrmUserRepository,
@@ -110,6 +119,7 @@ export class CoreDataTypeormModule {
         useClass: TypeOrmProductCategoryRepository,
       },
     ];
+
     return {
       module: CoreDataTypeormModule,
       providers: providers,

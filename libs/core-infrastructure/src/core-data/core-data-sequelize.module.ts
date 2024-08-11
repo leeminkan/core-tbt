@@ -2,19 +2,26 @@ import { DynamicModule, Module, Provider } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
 import pg from 'pg';
 
+import { SessionRepository, UserRepository } from '@libs/core-domain';
+
 import {
   CoreDataSequelizeAsyncOptions,
   CoreDataSequelizeOption,
 } from './core-data-sequelize.types';
-import { UserRepository } from './persistence';
+import {
+  SessionRepository as PostgresSessionRepository,
+  Session,
+} from './persistence/session/sequelize';
 import {
   UserRepository as PostgresUserRepository,
   User,
 } from './persistence/user/sequelize';
+import { UnitOfWork } from './unit-of-work';
+import { SequelizeUnitOfWork } from './unit-of-work/sequelize/uow';
 
 @Module({})
 export class CoreDataSequelizeModule {
-  static defaultEntities = [User];
+  static defaultEntities = [User, Session];
 
   static forRoot(options: CoreDataSequelizeOption): DynamicModule {
     return {
@@ -52,11 +59,22 @@ export class CoreDataSequelizeModule {
 
   static forFeature(): DynamicModule {
     const providers: Provider[] = [
+      // unit of work
+      {
+        provide: UnitOfWork,
+        useClass: SequelizeUnitOfWork,
+      },
+      // repositories
       {
         provide: UserRepository,
         useClass: PostgresUserRepository,
       },
+      {
+        provide: SessionRepository,
+        useClass: PostgresSessionRepository,
+      },
     ];
+
     return {
       module: CoreDataSequelizeModule,
       providers: providers,

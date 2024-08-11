@@ -20,8 +20,8 @@ import {
   RepositoryOptions,
   ThrowNotFoundErrorOptions,
 } from '@libs/core-domain/repository.types';
+import { UnitOfWorkManager } from '@libs/core-infrastructure';
 import { RecordNotFoundException } from '@libs/core-infrastructure/base.errors';
-import { UnitOfWorkManager } from '@libs/core-infrastructure/unit-of-work';
 import { Nullable, ShallowNever } from '@libs/core-shared';
 import { SortDirection } from '@libs/core-shared/constants';
 

@@ -1,10 +1,11 @@
-import { Product as ProductDomainEntity } from '@libs/core-domain';
+import { DeepPartial, Nullable, ShallowNever } from '@libs/core-shared';
+import { SortDirection } from '@libs/core-shared/constants';
+
 import {
   RepositoryOptions,
   ThrowNotFoundErrorOptions,
-} from '@libs/core-domain/repository.types';
-import { DeepPartial, Nullable, ShallowNever } from '@libs/core-shared';
-import { SortDirection } from '@libs/core-shared/constants';
+} from '../repository.types';
+import { Product as ProductDomainEntity } from './product.entity';
 
 export abstract class ProductRepository {
   abstract create(

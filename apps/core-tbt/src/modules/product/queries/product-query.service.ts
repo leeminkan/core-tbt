@@ -1,7 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 
-import { Product } from '@libs/core-domain';
-import { ProductRepository } from '@libs/core-infrastructure';
+import { Product, ProductRepository } from '@libs/core-domain';
 
 @Injectable()
 export class ProductQueryService {

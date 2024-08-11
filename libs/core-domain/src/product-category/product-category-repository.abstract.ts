@@ -1,10 +1,11 @@
-import { ProductCategory as ProductCategoryDomainEntity } from '@libs/core-domain';
+import { DeepPartial, Nullable, ShallowNever } from '@libs/core-shared';
+import { SortDirection } from '@libs/core-shared/constants';
+
 import {
   RepositoryOptions,
   ThrowNotFoundErrorOptions,
-} from '@libs/core-domain/repository.types';
-import { DeepPartial, Nullable, ShallowNever } from '@libs/core-shared';
-import { SortDirection } from '@libs/core-shared/constants';
+} from '../repository.types';
+import { ProductCategory as ProductCategoryDomainEntity } from './product-category.entity';
 
 export type FindAllAndCountArgs = {
   ids?: number[];

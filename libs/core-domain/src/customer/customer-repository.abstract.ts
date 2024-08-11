@@ -1,9 +1,10 @@
-import { Customer as CustomerDomainEntity } from '@libs/core-domain';
+import { DeepPartial, Nullable, ShallowNever } from '@libs/core-shared';
+
 import {
   RepositoryOptions,
   ThrowNotFoundErrorOptions,
-} from '@libs/core-domain/repository.types';
-import { DeepPartial, Nullable, ShallowNever } from '@libs/core-shared';
+} from '../repository.types';
+import { Customer as CustomerDomainEntity } from './customer.entity';
 
 export abstract class CustomerRepository {
   abstract create(

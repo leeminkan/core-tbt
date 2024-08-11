@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
-import { SessionRepository } from '@libs/core-infrastructure';
+import { SessionRepository } from '@libs/core-domain';
 
 @Injectable()
 export class SessionCommandService {

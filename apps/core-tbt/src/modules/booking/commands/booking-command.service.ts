@@ -6,14 +6,12 @@ import {
 
 import {
   Booking,
+  BookingRepository,
   BookingUpdateStatusError,
+  CustomerRepository,
   bookingStatus,
 } from '@libs/core-domain';
-import {
-  BookingRepository,
-  CustomerRepository,
-  UnitOfWork,
-} from '@libs/core-infrastructure';
+import { UnitOfWork } from '@libs/core-infrastructure';
 import { Nullable } from '@libs/core-shared';
 
 import { CreateBookingDto } from '../dtos/create-booking.dto';

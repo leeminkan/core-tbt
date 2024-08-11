@@ -5,7 +5,7 @@ import { createHash } from 'node:crypto';
 
 import { TokenService } from '@app/core-tbt/modules/jwt';
 
-import { SessionRepository, UserRepository } from '@libs/core-infrastructure';
+import { SessionRepository, UserRepository } from '@libs/core-domain';
 
 @Injectable()
 export class AuthCommandService {

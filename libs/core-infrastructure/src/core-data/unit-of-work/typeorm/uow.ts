@@ -8,7 +8,7 @@ import {
 
 import { UnitOfWork } from '../uow.abstract';
 
-export class TypeOrmUnitOfWork implements UnitOfWork {
+export class TypeormUnitOfWork implements UnitOfWork {
   constructor(
     @InjectEntityManager()
     private manager: EntityManager,

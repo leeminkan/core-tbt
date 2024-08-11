@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
 
-import { CoreDataTypeormModule } from '@libs/core-infrastructure';
+import { CoreDataSequelizeModule } from '@libs/core-infrastructure';
 
 import { SessionCommandService } from './session-command.service';
 
 @Module({
-  imports: [CoreDataTypeormModule.forFeature()],
+  imports: [CoreDataSequelizeModule.forFeature()],
   providers: [SessionCommandService],
   exports: [SessionCommandService],
 })

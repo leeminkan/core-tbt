@@ -1,7 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 
-import { ProductCategory } from '@libs/core-domain';
-import { ProductCategoryRepository } from '@libs/core-infrastructure';
+import { ProductCategory, ProductCategoryRepository } from '@libs/core-domain';
 
 import { GetListProductCategoryDto } from '../dtos';
 
