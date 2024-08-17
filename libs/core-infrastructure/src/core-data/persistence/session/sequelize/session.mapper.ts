@@ -11,6 +11,8 @@ export class SessionMapper {
     orm.user_id = sessionEntity.userId;
     orm.is_logout = sessionEntity.isLogout;
     orm.hash = sessionEntity.hash;
+    orm.auth_provider = sessionEntity.authProvider;
+    orm.properties = sessionEntity.properties;
     return orm;
   }
 
@@ -20,6 +22,8 @@ export class SessionMapper {
       userId: sessionOrm.user_id,
       isLogout: sessionOrm.is_logout,
       hash: sessionOrm.hash,
-    });
+      authProvider: sessionOrm.auth_provider,
+      properties: sessionOrm.properties,
+    } as SessionDomainEntity);
   }
 }

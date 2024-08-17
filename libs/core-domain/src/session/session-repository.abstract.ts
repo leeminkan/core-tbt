@@ -1,10 +1,16 @@
 import { DeepPartial, Nullable } from '@libs/core-shared';
+import { SortDirection } from '@libs/core-shared/constants';
 
 import { RepositoryOptions } from '../repository.types';
 import { Session as SessionDomainEntity } from './session.entity';
 
-export type CreateSessionData = DeepPartial<SessionDomainEntity> &
-  Pick<SessionDomainEntity, 'userId'>;
+export type CreateSessionData = DeepPartial<
+  Omit<SessionDomainEntity, 'isLogout'>
+> &
+  Pick<SessionDomainEntity, 'userId' | 'authProvider' | 'properties'>;
+
+export type UpdateSessionData = DeepPartial<SessionDomainEntity> &
+  Partial<Pick<SessionDomainEntity, 'properties'>>;
 
 export abstract class SessionRepository {
   abstract createSession(
@@ -14,7 +20,13 @@ export abstract class SessionRepository {
 
   abstract findAllAndCountByUserId(
     userId: number,
-    agrs: { take?: number; skip?: number },
+    agrs: {
+      take?: number;
+      skip?: number;
+      sort?: {
+        createdAt: SortDirection;
+      };
+    },
     options?: RepositoryOptions,
   ): Promise<{
     data: SessionDomainEntity[];
@@ -28,7 +40,7 @@ export abstract class SessionRepository {
 
   abstract updateSessionById(
     id: string,
-    data: DeepPartial<SessionDomainEntity>,
+    data: UpdateSessionData,
     options?: RepositoryOptions,
   ): void;
 }

@@ -5,3 +5,5 @@ export * from './auth-config.type';
 export * from './auth.config';
 export * from './database-config.type';
 export * from './database.config';
+export * from './keycloak-config.type';
+export * from './keycloak.config';

@@ -54,6 +54,15 @@
       "compilerOptions": {
         "tsConfigPath": "libs/core-shared/tsconfig.lib.json"
       }
+    },
+    "core-keycloak": {
+      "type": "library",
+      "root": "libs/core-keycloak",
+      "entryFile": "index",
+      "sourceRoot": "libs/core-keycloak/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/core-keycloak/tsconfig.lib.json"
+      }
     }
   }
 }

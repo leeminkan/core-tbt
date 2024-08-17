@@ -9,6 +9,9 @@ export class SessionCommandService {
   async findAllAndCountByUserId(userId: number) {
     return await this.sessionRepository.findAllAndCountByUserId(userId, {
       take: 20,
+      sort: {
+        createdAt: 'desc',
+      },
     });
   }
 }
