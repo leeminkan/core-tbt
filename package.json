@@ -103,7 +103,8 @@
     "moduleNameMapper": {
       "^@libs/core-infrastructure(|/.*)$": "<rootDir>/libs/core-infrastructure/src/$1",
       "^@libs/core-domain(|/.*)$": "<rootDir>/libs/core-domain/src/$1",
-      "^@libs/core-shared(|/.*)$": "<rootDir>/libs/core-shared/src/$1"
+      "^@libs/core-shared(|/.*)$": "<rootDir>/libs/core-shared/src/$1",
+      "^@libs/core-keycloak(|/.*)$": "<rootDir>/libs/core-keycloak/src/$1"
     }
   }
 }

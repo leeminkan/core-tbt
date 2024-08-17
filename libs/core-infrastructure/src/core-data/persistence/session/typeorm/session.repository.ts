@@ -1,12 +1,14 @@
 import { Injectable } from '@nestjs/common';
-import { DataSource, DeepPartial, EntityManager, Repository } from 'typeorm';
+import { DataSource, EntityManager, Repository } from 'typeorm';
 
 import {
-  Session as SessionDomainEntity,
+  CreateSessionData,
   SessionRepository as SessionRepositoryAbstract,
+  UpdateSessionData,
 } from '@libs/core-domain';
 import { RepositoryOptions } from '@libs/core-domain/repository.types';
 import { UnitOfWorkManager } from '@libs/core-infrastructure';
+import { SortDirection } from '@libs/core-shared/constants';
 
 import { SessionMapper } from './session.mapper';
 import { Session as SessionSchema } from './session.schema';
@@ -35,13 +37,14 @@ export class SessionRepository implements SessionRepositoryAbstract {
   }
 
   async createSession(
-    { userId, ...data }: DeepPartial<SessionDomainEntity>,
+    { userId, authProvider, ...data }: CreateSessionData,
     options?: RepositoryOptions,
   ) {
     const repository = this.getRepository(options?.unitOfWorkManager);
     const prepareSession = repository.create({
       ...data,
       user_id: userId,
+      auth_provider: authProvider,
     });
     const session = await repository.save(prepareSession);
     return this.mapper.mapToDomain(session);
@@ -49,7 +52,17 @@ export class SessionRepository implements SessionRepositoryAbstract {
 
   async findAllAndCountByUserId(
     userId: number,
-    { take = 20, skip = 0 }: { take?: number; skip?: number },
+    {
+      take = 20,
+      skip = 0,
+      sort,
+    }: {
+      take?: number;
+      skip?: number;
+      sort?: {
+        createdAt: SortDirection;
+      };
+    },
     options?: RepositoryOptions,
   ) {
     const repository = this.getRepository(options?.unitOfWorkManager);
@@ -59,6 +72,11 @@ export class SessionRepository implements SessionRepositoryAbstract {
       },
       take,
       skip,
+      ...(sort?.createdAt && {
+        order: {
+          created_at: sort.createdAt,
+        },
+      }),
     });
 
     return {
@@ -75,10 +93,15 @@ export class SessionRepository implements SessionRepositoryAbstract {
 
   async updateSessionById(
     id: string,
-    { userId, ...data }: DeepPartial<SessionDomainEntity>,
+    { userId, authProvider, isLogout, ...data }: UpdateSessionData,
     options?: RepositoryOptions,
   ) {
     const repository = this.getRepository(options?.unitOfWorkManager);
-    return await repository.update(id, { ...data, user_id: userId });
+    return await repository.update(id, {
+      ...data,
+      user_id: userId,
+      auth_provider: authProvider,
+      is_logout: isLogout,
+    });
   }
 }

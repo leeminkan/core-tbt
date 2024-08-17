@@ -16,6 +16,7 @@ RUN cd apps/chat-tbt && pnpm install
 
 COPY libs libs
 RUN cd libs/core-infrastructure && pnpm install
+RUN cd libs/core-keycloak && pnpm install
 
 RUN pnpm run build chat-tbt
 

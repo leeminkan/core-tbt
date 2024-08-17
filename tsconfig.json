@@ -29,7 +29,9 @@
       "@libs/core-domain": ["libs/core-domain/src"],
       "@libs/core-domain/*": ["libs/core-domain/src/*"],
       "@libs/core-shared": ["libs/core-shared/src"],
-      "@libs/core-shared/*": ["libs/core-shared/src/*"]
+      "@libs/core-shared/*": ["libs/core-shared/src/*"],
+      "@libs/core-keycloak": ["libs/core-keycloak/src"],
+      "@libs/core-keycloak/*": ["libs/core-keycloak/src/*"]
     }
   }
 }

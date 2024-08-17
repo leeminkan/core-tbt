@@ -13,6 +13,7 @@ import {
   appConfig,
   authConfig,
   databaseConfig,
+  keycloakConfig,
 } from './configs';
 import { AuthModule } from './modules/auth';
 import { BookingModule } from './modules/booking';
@@ -25,7 +26,7 @@ import { UserModule } from './modules/user';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [appConfig, databaseConfig, authConfig],
+      load: [appConfig, databaseConfig, authConfig, keycloakConfig],
     }),
     CoreDataTypeormModule.forRootAsync({
       inject: [ConfigService],

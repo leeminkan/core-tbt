@@ -4,11 +4,11 @@ import { Sequelize } from 'sequelize-typescript';
 
 import {
   CreateSessionData,
-  Session as SessionDomainEntity,
   SessionRepository as SessionRepositoryAbstract,
+  UpdateSessionData,
 } from '@libs/core-domain';
 import { RepositoryOptions } from '@libs/core-domain/repository.types';
-import { DeepPartial } from '@libs/core-shared';
+import { SortDirection } from '@libs/core-shared/constants';
 
 import { SessionMapper } from './session.mapper';
 import { Session } from './session.schema';
@@ -25,14 +25,15 @@ export class SessionRepository implements SessionRepositoryAbstract {
   }
 
   async createSession(
-    { userId, ...data }: CreateSessionData,
+    { userId, authProvider, ...data }: CreateSessionData,
     options?: RepositoryOptions,
-  ): Promise<SessionDomainEntity> {
+  ) {
     const repository = this.getRepository();
     const session = await repository.create(
       {
         ...data,
         user_id: userId,
+        auth_provider: authProvider,
       },
       {
         transaction: options?.unitOfWorkManager as Transaction,
@@ -44,7 +45,17 @@ export class SessionRepository implements SessionRepositoryAbstract {
 
   async findAllAndCountByUserId(
     userId: number,
-    { take = 20, skip = 0 }: { take?: number; skip?: number },
+    {
+      take = 20,
+      skip = 0,
+      sort,
+    }: {
+      take?: number;
+      skip?: number;
+      sort?: {
+        createdAt: SortDirection;
+      };
+    },
     options?: RepositoryOptions,
   ) {
     const repository = this.getRepository();
@@ -54,6 +65,12 @@ export class SessionRepository implements SessionRepositoryAbstract {
       },
       limit: take,
       offset: skip,
+      ...(sort && {
+        order: Object.entries(sort).map(([column, direction]) => {
+          if (column === 'createdAt') return ['created_at', direction];
+          return [column, direction];
+        }),
+      }),
       transaction: options?.unitOfWorkManager as Transaction,
     });
 
@@ -76,7 +93,7 @@ export class SessionRepository implements SessionRepositoryAbstract {
 
   async updateSessionById(
     id: string,
-    { userId, ...data }: DeepPartial<SessionDomainEntity>,
+    { userId, authProvider, ...data }: UpdateSessionData,
     options?: RepositoryOptions,
   ) {
     const repository = this.getRepository();
@@ -84,6 +101,7 @@ export class SessionRepository implements SessionRepositoryAbstract {
       {
         ...data,
         user_id: userId,
+        auth_provider: authProvider,
       },
       {
         where: {

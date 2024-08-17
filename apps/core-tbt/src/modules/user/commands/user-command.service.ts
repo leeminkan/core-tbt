@@ -6,10 +6,14 @@ import { Nullable } from '@libs/core-shared';
 
 import { CreateUserDto } from '../dtos/create-user.dto';
 import { UpdateUserDto } from '../dtos/update-user.dto';
+import { UserService } from '../services/user.service';
 
 @Injectable()
 export class UserCommandService {
-  constructor(private readonly userRepository: UserRepository) {}
+  constructor(
+    private readonly userRepository: UserRepository,
+    private readonly userService: UserService,
+  ) {}
 
   async create(createUserDto: CreateUserDto): Promise<User> {
     // check username
@@ -22,12 +26,7 @@ export class UserCommandService {
       );
     }
 
-    const hashPassword = hashSync(createUserDto.password, 10);
-    const user = await this.userRepository.createUser({
-      ...createUserDto,
-      password: hashPassword,
-    });
-    return user;
+    return await this.userService.create(createUserDto);
   }
 
   async update(
